@@ -466,7 +466,7 @@ boot
 #root()
 
 
-iftitle [if exist /ubuntu.iso] Install Ubuntu 18.04 LTS \n ubuntu.iso \n Unix OS \n (loads iso to mem)
+iftitle [if exist /ubuntu.iso] Install Ubuntu 20.04 LTS \n ubuntu.iso \n Unix OS \n (loads iso to mem)
 set MYISO=ubuntu.iso
 find --set-root /%MYISO%
 map --mem /%MYISO% (0xff) || map --heads=0 --sectors-per-track=0 /%MYISO% (0xff)
@@ -474,7 +474,7 @@ map --hook
 root (0xff)
 kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=/%MYISO% quiet splash
 #kernel (loop)/casper/vmlinuz boot=casper iso-scan/filename=$isofile locale=en_US.UTF-8 liveimg noprompt persistent noeject quiet splash --
-initrd /casper/initrd.lz
+initrd /casper/initrd
 boot
 
 
