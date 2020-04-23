@@ -17,19 +17,15 @@ So, your boot files are protected as long as you set the “Data” partition as
 ### “multi-boot”
 USB disk can boot from the following:
 
-- Windows XP/7/8/8.1/10 installation ISO (you can install any version of windows)
+- Windows XP/7/10 installation ISO (you can install any version of windows)
 - Windows PE (Preinstalled Environment) ISO
+- Ubuntu ISO (i.e: live/installation)
 - Hiren’s BootCD ISO
 - Ultimate BootCD ISO
-- Linux ISO (Ubuntu, BackTrack, CentOS, XiaoPan)
 - Acronis Disk Director ISO
 - Acronis True Image ISO
-- Clonezilla ISO
 - Norton Ghost (2003/v15) IMG/ISO
-- Offline Windows Password & Registry Editor ISO
-- OphCrack Password Cracker ISO
-- Partition Wizard ISO
-- and more …
+- and possibly more …
 
 **Screenshot**
 ![Screenshot](./docs/HBoot-screenshot.png)
