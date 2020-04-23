@@ -68,6 +68,9 @@ write 0x8274 0x2001
 #savedefault --wait=2
 
 
+############################################################
+############################################################
+############################################################
 
 title boot from 1st HDD ... \n(continue current windows booting) \nBoot from MBR of first hard disk and skip the USB drive
 map (hd0) (hd1)
@@ -97,7 +100,9 @@ find --set-root /boot/.swap_partitions.g4b
 find --set-root /menu.lst
 configfile ()/menu.lst
 
-
+############################################################
+############################################################
+############################################################
 
 #title - Windows PE : (partitioning + backup/clone + manage + internet ...)
 #root()
@@ -129,6 +134,9 @@ map (hd1) (hd0)
 map --hook
 chainloader (0xff)/BOOTMGR || chainloader (0xff)
 
+############################################################
+############################################################
+############################################################
 
 #title - Install Windows :
 #root ()
@@ -213,12 +221,9 @@ echo -------------------------------------------------------------
 pause Press ENTER and then unplug this USB drive...
 boot
 
-
-
-
-
-
-
+############################################################
+############################################################
+############################################################
 
 #title             ----- Ubuntu -----
 #root()
@@ -267,11 +272,9 @@ boot
 #initrd /boot/initrd.img-4.4.0-36-generic
 #boot
 
-
-
-
-
-
+############################################################
+############################################################
+############################################################
 
 #title - Partitioning :
 #root()
@@ -303,6 +306,9 @@ map --hook
 root (0xff)
 chainloader (0xff)
 
+############################################################
+############################################################
+############################################################
 
 #title - Cloning (Backup & Restore) :
 #root()
@@ -358,7 +364,6 @@ chainloader (hd32)
 boot
 
 
-
 iftitle [if exist /iso_ghost15.01.iso] Norton Ghost v15.01 \n Cloning (Backup & Restore)
 set MYISO=iso_ghost15.01.iso
 find --set-root /%MYISO%
@@ -389,6 +394,9 @@ write (99) [FiraDisk]\nStartOptions=cdrom,vmem=find:/%MYISO%;\n\0
 chainloader (0xff)/BOOTMGR || chainloader (0xff)
 boot
 
+############################################################
+############################################################
+############################################################
 
 #title - AIO BootCD's :
 #root()
@@ -462,6 +470,9 @@ root (0xff)
 chainloader (0xff)
 boot
 
+############################################################
+############################################################
+############################################################
 
 #title - Tools/Misc. :
 #root()
@@ -475,7 +486,6 @@ chainloader (hd32)
 boot
 
 
-
 iftitle [if exist /iso_OfflineWindowsPassword&RegistryEditor.iso] Offline Windows Password & Registry Editor \n Tools/Misc.
 set MYISO=iso_OfflineWindowsPassword&RegistryEditor.iso
 map --mem (md)0x800+4 (99)
@@ -487,9 +497,11 @@ write (99) [FiraDisk]\nStartOptions=cdrom,vmem=find:/%MYISO%;\n\0
 chainloader (0xff)/BOOTMGR || chainloader (0xff)
 boot
 
+############################################################
+############################################################
+############################################################
 
-
-#title - Unix OS's :
+#title - Other Unix OS's :
 #root ()
 
 
@@ -549,6 +561,9 @@ kernel /boot/casper/vmlinuz quiet tinycore iso=UUID=%UUID%/%MYISO% waitusb=5 %my
 initrd /boot/core.gz
 boot
 
+############################################################
+############################################################
+############################################################
 
 #title - OTHERS :
 #root()
@@ -629,9 +644,9 @@ root (0xff)
 chainloader (0xff)
 boot
 
-
-
-
+############################################################
+############################################################
+############################################################
 
 #title - Commands :
 #root()
@@ -651,5 +666,3 @@ title Shutdown
 #echo Shutting down in 2 seconds
 #pause --wait=2
 halt
-
-
