@@ -1,11 +1,22 @@
 ############ ISO Download links ############
 ## Recommended download links:
-#-win10_x64.iso		#https://mirror.mika.moe/files/Win10_1803_English_x64.iso	Win10_1803_English_x64.iso (Pro, Core)
-#-Win7PE_x64.iso	#http://bit.ly/win7pe-x64		Win7PE_x64.iso
-#-ubuntu.iso		#http://mirror.corbina.net/ubuntu-cd/18.04/ubuntu-18.04-desktop-amd64.iso
-#-win7_x64.iso		#http://bit.ly/win7sp1-x64		en_windows_7_enterprise_with_sp1_x64_dvd_u_677651.iso				A491F985DCCFB5863F31B728DDDBEDB2FF4DF8D1
-#-win7_x86.iso		#http://bit.ly/win7sp1-x86		en_windows_7_enterprise_with_sp1_x86_dvd_u_677710.iso				4E0450AC73AB6F9F755EB422990CD9C7A1F3509C
-#-win10_x86.iso		
+# Windows 10:
+#   - https://www.microsoft.com/en-us/software-download/windows10ISO/
+#   - https://support.microsoft.com/en-us/help/13853/windows-lifecycle-fact-sheet
+# Ubuntu:
+#   - http://releases.ubuntu.com
+# Windows 7 PE (Preinstalled Environment)/(Live):
+#   - http://bit.ly/win7pe-x64
+#
+## Further detailed links:
+#-ubuntu-20.04-desktop-amd64.iso                  #http://releases.ubuntu.com/20.04/ubuntu-20.04-desktop-amd64.iso
+#-ubuntu-18.04.4-desktop-amd64.iso                #http://releases.ubuntu.com/18.04/ubuntu-18.04.4-desktop-amd64.iso
+# Win10_1909_English_x64.iso or any Windows iso   #https://www.microsoft.com/en-us/software-download/windows10ISO/
+#-Win7PE_x64.iso                                  #http://bit.ly/win7pe-x64
+#-win10_x64.iso                                   (Obsolete, please use original iso name)
+#-win10_x86.iso                                   (Obsolete, please use original iso name)
+#-win7_x64.iso                                    #http://bit.ly/win7sp1-x64        en_windows_7_enterprise_with_sp1_x64_dvd_u_677651.iso
+#-win7_x86.iso                                    #http://bit.ly/win7sp1-x86        en_windows_7_enterprise_with_sp1_x86_dvd_u_677710.iso
 #-win_xp_x86.iso
 ## Other good links
 #http://bit.ly/win10v1803-x64	Win10_1803_English_x64.iso (Pro, Core)
@@ -80,7 +91,6 @@ chainloader (hd0)+1
 rootnoverify (hd0)
 
 
-
 #if exist FL_Path && call :ListFile ! call :ListDrive
 #if exist (hd0,1)/boot/.swap_partitions.g4b (hd0,1)/boot/.swap_partitions.g4b (hd0) 1 SURE
 
@@ -119,7 +129,6 @@ map (hd0) (hd1)
 map (hd1) (hd0)
 map --hook
 chainloader (0xff)/BOOTMGR || chainloader (0xff)
-
 
 
 iftitle [if exist /Win7PE_x86.iso] Load Windows 7 PE x86 \n (partitioning + backup/clone + manage + internet ...)
