@@ -148,7 +148,28 @@ chainloader (0xff)/BOOTMGR || chainloader (0xff)
 #root ()
 
 
-iftitle [if exist /win10_x64.iso] Install Windows 10 x64 \n win10_x64.iso \n Windows 10 version 1803 (Spring Creators Update, Redstone 4)
+iftitle [if exist /Win10_1909_English_x64.iso] Install Windows 10 1909 English (x64) \n Win10_1909_English_x64.iso \n Windows 10 version 1909
+set MYISO=Win10_1909_English_x64.iso
+configfile ()/boot/.menuISOWinChooseProdKey.lst
+
+
+iftitle [if exist /Win10_1909_German_x64.iso] Install Windows 10 1909 German (x64) \n Win10_1909_German_x64.iso \n Windows 10 version 1909
+set MYISO=Win10_1909_German_x64.iso
+configfile ()/boot/.menuISOWinChooseProdKey.lst
+
+
+iftitle [if exist /Win10_1909_English_x86.iso] Install Windows 10 1909 English (x86) \n Win10_1909_English_x86.iso \n Windows 10 version 1909
+set MYISO=Win10_1909_English_x86.iso
+configfile ()/boot/.menuISOWinChooseProdKey.lst
+
+
+iftitle [if exist /Win10_1909_German_x86.iso] Install Windows 10 1909 German (x86) \n Win10_1909_German_x86.iso \n Windows 10 version 1909
+set MYISO=Win10_1909_German_x64.iso
+configfile ()/boot/.menuISOWinChooseProdKey.lst
+
+
+
+iftitle [if exist /win10_x64.iso] Install Windows 10 x64 \n win10_x64.iso
 set MYISO=win10_x64.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
@@ -247,8 +268,8 @@ initrd /casper/initrd
 boot
 
 
-iftitle [if exist /ubuntu-18.04-desktop-amd64.iso] Install Ubuntu 18.04 LTS (Xenial Xerus) \n ubuntu-18.04-desktop-amd64.iso \n Unix OS \n (loads iso to mem)
-set MYISO=ubuntu-18.04-desktop-amd64.iso
+iftitle [if exist /ubuntu-18.04.4-desktop-amd64.iso] Install Ubuntu 18.04 LTS (Xenial Xerus) \n ubuntu-18.04.4-desktop-amd64.iso \n Unix OS \n (loads iso to mem)
+set MYISO=ubuntu-18.04.4-desktop-amd64.iso
 find --set-root /%MYISO%
 map --mem /%MYISO% (0xff) || map --heads=0 --sectors-per-track=0 /%MYISO% (0xff)
 map --hook
