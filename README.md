@@ -3,9 +3,11 @@
 A homemade “multi-partition” “multi-iso-boot” USB disk: install Ubuntu, Windows 7/8/8.1/10, load WindowsPE, and more …
 
 ## Overview
+
 A brief explanation of:
 
 ### “multi-partition”
+
 USB disk will have 2 partitions:
 
 - NTFS partition for all “Boot” files (ISO files, grldr, firadisk, …)
@@ -15,6 +17,7 @@ USB disk will have 2 partitions:
 So, your boot files are protected as long as you set the “Data” partition as the visible one.
 
 ### “multi-boot”
+
 USB disk can boot from the following:
 
 - Windows XP/7/10 installation ISO (you can install any version of windows)
@@ -30,7 +33,6 @@ USB disk can boot from the following:
 **Screenshot**
 
 ![Screenshot](./docs/HBoot-screenshot.png)
-
 
 ## Technically speaking (beginner? jump to Steps):
 
@@ -53,28 +55,30 @@ DO NOT CONTINUE IF YOU DO NOT KNOW WHAT YOU ARE DOING.
 1. Clone the “**HBoot-Files**“ (this repository)
 2. Using “**BOOTICE.exe**” (in “**HBoot-Tools.zip**“), follow the screenshot below (blue marks are optional/changeable):
 
-    ![Tutorial](./docs/HBoot-tutorial-windows.png)
+   ![Tutorial](./docs/HBoot-tutorial-windows.png)
 
 3. Copy the ISO files to the boot partition
 
-    (preferable by _dragNdrop_ to “**.[ReOrganizeFiles].bat**“)
+   (preferable by _dragNdrop_ to “**.[ReOrganizeFiles].bat**“)
 
-    (download links can be found at the beginning of “**menu.lst**“)
+   (download links can be found at the beginning of “**menu.lst**“)
 
 4. Run “**.[ReOrganizeFiles].bat**” to ensure ISO contigousiness (i.e: don’t need defrag) & to protect boot files.
 
 ## Notes:
+
 - Using “**.[SwitchPartitions].bat**” you can switch/swap between “Boot” and “Data” partitions.
 
   You can switch also using “BOOTICE” => “Parts Manage” => “Set Accessible”
+
 - Using “**.[ReOrganizeFiles].bat**” you can:
   - Copy files **contiguously** (if possible) by opening/dragging-dropping them with the “**.[ReOrganizeFiles].bat**” file.
   - Verify that all **ISO** files are **contiguous** (must be so, to boot).
   - Hide/protect critical boot files & show/unhide all other files (useful in case of some malware infection).
   - Remove (from root folder only) :
-    - shortcut files (*.lnk)
-    - vbScript files (*.vbs)
-    - JavaScript files (*.js)
+    - shortcut files (\*.lnk)
+    - vbScript files (\*.vbs)
+    - JavaScript files (\*.js)
     - “Autorun.inf” file created by some malwares
     - “System Volume Information” folder
     - “Recycler” folder
@@ -90,5 +94,6 @@ Good Luck 😉
 #### Hint:
 
 This _tutorial_ was used to be a [blog post](https://hossam6236.wordpress.com/2016/09/03/hboot-multi-partition-multi-boot-from-iso-files-usb-install-windows-7-10-windowspe-boot-iso/) since 2016, but is moved to a git repo for:
+
 - tracking changes of `menu.lst` due to new releases of Windows and Ubuntu
 - easier maintenance of files here than google drive
