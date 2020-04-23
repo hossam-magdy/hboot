@@ -1,0 +1,623 @@
+############ ISO Download links ############
+## Recommended download links:
+#-win10_x64.iso		#https://mirror.mika.moe/files/Win10_1803_English_x64.iso	Win10_1803_English_x64.iso (Pro, Core)
+#-Win7PE_x64.iso	#http://bit.ly/win7pe-x64		Win7PE_x64.iso
+#-ubuntu.iso		#http://mirror.corbina.net/ubuntu-cd/18.04/ubuntu-18.04-desktop-amd64.iso
+#-win7_x64.iso		#http://bit.ly/win7sp1-x64		en_windows_7_enterprise_with_sp1_x64_dvd_u_677651.iso				A491F985DCCFB5863F31B728DDDBEDB2FF4DF8D1
+#-win7_x86.iso		#http://bit.ly/win7sp1-x86		en_windows_7_enterprise_with_sp1_x86_dvd_u_677710.iso				4E0450AC73AB6F9F755EB422990CD9C7A1F3509C
+#-win10_x86.iso		
+#-win_xp_x86.iso
+## Other good links
+#http://bit.ly/win10v1803-x64	Win10_1803_English_x64.iso (Pro, Core)
+#http://bit.ly/win10v1709-x64-vl	en_windows_10_multi-edition_vl_version_1709_updated_sept_2017_x64_dvd_100090741.iso
+#http://bit.ly/win10v1709-x86-vl	en_windows_10_multi-edition_vl_version_1709_updated_sept_2017_x86_dvd_100090759.iso
+#http://bit.ly/win10v1703-x64	en_windows_10_enterprise_version_1703_updated_march_2017_x86_dvd_10188981.iso	DE7F15A1DE19BD9507B5B5693E3F56D10F662864
+#http://bit.ly/win10v1703-x86	en_windows_10_enterprise_version_1703_updated_march_2017_x64_dvd_10189290.iso	77d5e7c91b5dbbee410fb6c57cb944238bf7176a
+############################################
+
+timeout 30
+default 0
+
+# set colors
+#color black/cyan    blue/cyan        red/light-blue     red/cyan
+
+# Pick a suitable splash image depends on highest available resolution
+graphicsmode -1 640  100:1000 24:32 && set GM=640
+graphicsmode -1 800  100:1000 24:32 && set GM=800
+#graphicsmode -1 1024 100:1000 24:32 && set GM=1024
+#if "%GM%"=="1024" splashimage /boot/splashimg_1024.bmp
+#if "%GM%"=="800" splashimage /boot/splashimg_800.bmp
+#if "%GM%"=="640" splashimage /boot/splashimg_640.bmp
+
+#clear
+#debug off
+
+# display heading
+write (md)0x220+1 !BAT\necho -n -P:0000 $[0133]                           ((((( AIO USB Drive )))))                           \0
+initscript (md)0x220+1
+
+#------------------------------------------------------------- Commands saved as comments for later usage
+#autonumber boot entries with a space (20) after the number
+write 0x8274 0x2001
+#autonumber boot entries with a hyphen (2d) after the number
+#write 0x8274 0x2d01
+#autonumber all entries (ff) including non-boot entries with a space (20) after the number
+#write 0x8274 0x20ff
+#autonumber all entries (including non-bootable entries) and add a hyphen (2d) after the number
+#write 0x8274 0x2dff
+#
+#title ^F1 Press F1 to Boot From (hd0,0)
+#chainloader (hd0,0)+1
+#
+#title ^Ctrl+F1 Press Ctrl+F1 to boot From (hd0,0)/ntldr
+#chainloader (hd0,0)/ntldr
+#
+#iftitle [find --set-root --devices=h /bootmgr] ^F2 Press F2 to Boot Windows from hard disk 
+#find --set-root --devices=h /bootmgr
+#chainloader /bootmgr
+#
+#title ^R Reboot
+#reboot
+#
+#title [H] Halt
+#halt
+#
+
+#------------------------------------------------------------- Commands saved as comments for later usage
+#iftitle [if exist (bd)/test.img] find /test.img on any drive and boot to it
+#savedefault --wait=2
+
+
+
+title boot from 1st HDD ... \n(continue current windows booting) \nBoot from MBR of first hard disk and skip the USB drive
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+chainloader (hd0)+1
+rootnoverify (hd0)
+
+
+
+#if exist FL_Path && call :ListFile ! call :ListDrive
+#if exist (hd0,1)/boot/.swap_partitions.g4b (hd0,1)/boot/.swap_partitions.g4b (hd0) 1 SURE
+
+
+title Swap Partitions : ('Boot') <=> ('Data')
+set nPartL=NOT_FOUND
+parttype (hd0,1) > nul
+if #%@retval%>=#7 set nPartL=Data
+if exist (hd0,1)/boot set nPartL=Boot
+if %nPartL%==NOT_FOUND configfile ()/menu.lst
+echo 
+echo The '%nPartL%' partition will be set as accessible
+echo Press any key to continue, ESC to cancel ...
+pause && set /a key=*0x4CB00 ! configfile ()/menu.lst
+find --set-root /boot/.swap_partitions.g4b
+/boot/.swap_partitions.g4b (hd0) 1 SURE
+find --set-root /menu.lst
+configfile ()/menu.lst
+
+
+
+#title - Windows PE : (partitioning + backup/clone + manage + internet ...)
+#root()
+
+
+iftitle [if exist /Win7PE_x64.iso] Load Windows 7 PE x64 \n (partitioning + backup/clone + manage + internet ...)
+set MYISO=Win7PE_x64.iso
+if exist (hd0,1)/boot/.swap_partitions.g4b (hd0,1)/boot/.swap_partitions.g4b (hd0) 1 SURE
+find --set-root /boot/.swap_partitions.g4b
+cat ()/boot/spaces.txt > ()/Win7PESE.ini
+write ()/Win7PESE.ini [IsoInfo]\r\nIsoName=%MYISO%\r\n
+map /%MYISO% (0xff)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+chainloader (0xff)/BOOTMGR || chainloader (0xff)
+
+
+
+iftitle [if exist /Win7PE_x86.iso] Load Windows 7 PE x86 \n (partitioning + backup/clone + manage + internet ...)
+set MYISO=Win7PE_x86.iso
+if exist (hd0,1)/boot/.swap_partitions.g4b (hd0,1)/boot/.swap_partitions.g4b (hd0) 1 SURE
+find --set-root /boot/.swap_partitions.g4b
+cat ()/boot/spaces.txt > ()/Win7PESE.ini
+write ()/Win7PESE.ini [IsoInfo]\r\nIsoName=%MYISO%\r\n
+map /%MYISO% (0xff)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+chainloader (0xff)/BOOTMGR || chainloader (0xff)
+
+
+#title - Install Windows :
+#root ()
+
+
+iftitle [if exist /win10_x64.iso] Install Windows 10 x64 \n win10_x64.iso \n Windows 10 version 1803 (Spring Creators Update, Redstone 4)
+set MYISO=win10_x64.iso
+configfile ()/boot/.menuISOWinChooseProdKey.lst
+
+
+iftitle [if exist /win10_x86.iso] Install Windows 10 x86 \n win10_x86.iso
+set MYISO=win10_x86.iso
+configfile ()/boot/.menuISOWinChooseProdKey.lst
+
+
+
+iftitle [if exist /win7_x64.iso] Install Windows 7 x64 \n win7_x64.iso \n Make sure that the USB device is set as 1st boot option at BIOS settings.\n(not choosed as on-time boot by "F12" key)
+set MYISO=win7_x64.iso
+configfile ()/boot/.menuISOWinChooseProdKey.lst
+
+
+iftitle [if exist /win7_x86.iso] Install Windows 7 x86 \n win7_x86.iso \n Make sure that the USB device is set as 1st boot option at BIOS settings.\n(not choosed as on-time boot by "F12" key)
+set MYISO=win7_x86.iso
+configfile ()/boot/.menuISOWinChooseProdKey.lst
+
+
+iftitle [if exist /win8.1_x64.iso] Install Windows 8.1 x64 \n win8.1_x64.iso
+set MYISO=win8.1_x64.iso
+configfile ()/boot/.menuISOWinChooseProdKey.lst
+
+
+iftitle [if exist /win8.1_x86.iso] Install Windows 8.1 x86 \n win8.1_x86.iso
+set MYISO=win8.1_x86.iso
+configfile ()/boot/.menuISOWinChooseProdKey.lst
+
+
+iftitle [if exist /win_xp_x86.iso] Install Windows XP Pro SP3 (step1) \n win_xp_x86.iso \n Serial Number : D36RK-QDFFD-BTWWY-BT7KK-43MGM \n *** NOTE : You have to press F6 & load Firadisk driver at the beginning of installation
+set MYISO=win_xp_x86.iso
+if exist (hd0,1)/boot/.swap_partitions.g4b (hd0,1)/boot/.swap_partitions.g4b (hd0) 1 SURE
+find --set-root --ignore-floppies --ignore-cd /boot/winvblock.ima.gz
+map --mem /boot/winvblock.ima.gz (fd0)
+map --mem /boot/winvblock.ima.gz  (fd1)
+# if this loads the ISO into memory slowly - then you need to run WinContig on the ISO file on your USB drive to speed it up!
+map  /%MYISO% (0xff) || map  --mem /%MYISO% (0xff)
+find --set-root /%MYISO%
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+root (0xff)
+if not exist (0xff)/i386/setupldr.bin echo WARNING: The ISO is not an XP Install ISO!!! && pause
+chainloader (0xff)/i386/setupldr.bin || chainloader (0xff)/I386/SETUPLDR.BIN || chainloader (0xff)
+echo -------------------------------------------------------------
+echo 1- Press F6 at the beginning of blue screen.
+echo 2- Press S to choose a driver for removable media storage.
+echo 3- Choose WinVBlock (4th choice) / FiraDisk.
+echo 4- Press Enter & proceed the installation process.
+echo -------------------------------------------------------------
+echo !!!!!!!!!!!!!!! Remember Serial Number !!!!!!!!!!!!!!!!
+echo            " D36RK-QDFFD-BTWWY-BT7KK-43MGM "           
+echo -------------------------------------------------------------
+echo ~~~ ORIGINAL Recommendations :
+echo If you have an AHCI HDD you MUST press F6 when prompted, then hit S to select WinVBlock or FiraDisk (recommended) driver, then hit S again to select your AHCI driver (e.g. Atom Netbook=WinVBlock+ICH7R/DH, DQ67 series 6=FiraDisk+Desktop,Workstation,Server Express)
+pause Now quickly hit [Enter] twice (and then F6 if you need to install an AHCI driver) ...
+boot
+
+
+iftitle [if exist /win_xp_x86.iso] Install Windows XP Pro SP3 (step2) \n win_xp_x86.iso
+set MYISO=win_xp_x86.iso
+if exist (hd0,1)/boot/.swap_partitions.g4b (hd0,1)/boot/.swap_partitions.g4b (hd0) 1 SURE
+find --set-root --ignore-floppies --ignore-cd /boot/winvblock.ima.gz
+# we must load the ISO into memory, so it will be slow to load here ...
+map --mem /%MYISO% (0xff) || map  /%MYISO% (0xff)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+rootnoverify (hd0,0)
+chainloader (hd0)+1
+echo -------------------------------------------------------------
+echo !!!!!!!!!!!!!!! Remember Serial Number !!!!!!!!!!!!!!!!
+echo            " D36RK-QDFFD-BTWWY-BT7KK-43MGM "           
+echo -------------------------------------------------------------
+pause Press ENTER and then unplug this USB drive...
+boot
+
+
+
+
+
+#title - Partitioning :
+#root()
+
+
+iftitle [if exist /iso_acronis.iso] Acronis Disk Director \n Partitioning
+set MYISO=iso_acronis.iso
+map /%MYISO% (hd32)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+chainloader (hd32)
+boot
+
+
+iftitle [if exist /iso_acronis.iso] Acronis Disk Director (from Memory) \n Partitioning \n ISO size ~130MB
+set MYISO=iso_acronis.iso
+find --set-root /%MYISO%
+map --mem /%MYISO% (hd32)
+map --hook
+chainloader (hd32)
+
+
+iftitle [if exist /iso_pmagic.iso] X Parted Magic pmagic.iso \n Partitioning
+set MYISO=iso_pmagic.iso
+find --set-root /%MYISO%
+map --heads=0 --sectors-per-track=0 /%MYISO% (0xff)
+map --hook
+root (0xff)
+chainloader (0xff)
+
+
+#title - Cloning (Backup & Restore) :
+#root()
+
+
+iftitle [if exist /iso_clonezilla_amd64.iso] Clonezilla AMD64 (backup & clone) \n Cloning (Backup & Restore) \n(using vmlinuz & initrd)
+set MYISO=iso_clonezilla_amd64.iso
+find --set-root /%MYISO%
+map --heads=0 --sectors-per-track=0 /%MYISO% (0xff)
+map --hook
+root (0xff)
+loopback loop /%MYISO%
+kernel /boot/casper/vmlinuz boot=live union=aufs nolocales noprompt vga=758 ip=frommedia toram findiso=/%MYISO%
+initrd /boot/casper/initrd.lz 
+boot
+
+
+iftitle [if exist /iso_acronisTrueImage.iso] Acronis True Image \n Cloning (Backup & Restore)
+set MYISO=iso_acronisTrueImage.iso
+map /%MYISO% (hd32)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+chainloader (hd32)
+boot
+
+
+iftitle [if exist /iso_acronisTrueImage.iso] Acronis True Image (from Memory) \n Cloning (Backup & Restore) \n ISO size : ~500MB
+set MYISO=iso_acronisTrueImage.iso
+find --set-root /%MYISO%
+map --mem /%MYISO% (hd32)
+map --hook
+chainloader (hd32)
+
+
+iftitle [if exist /iso_ghost2003.ima] Norton Ghost 2003 \n Cloning (Backup & Restore)
+set MYISO=iso_ghost2003.ima
+find --set-root /%MYISO%
+map --mem /%MYISO% (fd0)
+map --hook
+root (fd0)
+chainloader +1
+boot
+
+
+iftitle [if exist /iso_NortonGhost15.iso] NortonGhost15 \n Cloning (Backup & Restore)
+set MYISO=iso_NortonGhost15.iso
+find --set-root /%MYISO%
+map /%MYISO% (hd32)
+map --hook
+root (hd32)
+chainloader (hd32)
+boot
+
+
+
+iftitle [if exist /iso_ghost15.01.iso] Norton Ghost v15.01 \n Cloning (Backup & Restore)
+set MYISO=iso_ghost15.01.iso
+find --set-root /%MYISO%
+map /%MYISO% (hd32)
+map --hook
+root (hd32)
+chainloader (hd32)
+boot
+
+
+iftitle [if exist /iso_ghost15.01.iso] Norton Ghost v15.01 (Alternative : from Memory) \n Cloning (Backup & Restore) \n ISO size : ~200MB
+set MYISO=iso_ghost15.01.iso
+find --set-root /%MYISO%
+map --mem /%MYISO% (hd32)
+map --hook
+chainloader (hd32)
+boot
+
+
+iftitle [if exist /iso_ghost15.01.iso] Norton Ghost v15.01 (Alternative : from Memory & using FiraDisk) \n Cloning (Backup & Restore) \n ISO size : ~200MB
+set MYISO=iso_ghost15.01.iso
+map --mem (md)0x800+4 (99)
+map /%MYISO% (0xff)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+write (99) [FiraDisk]\nStartOptions=cdrom,vmem=find:/%MYISO%;\n\0
+chainloader (0xff)/BOOTMGR || chainloader (0xff)
+boot
+
+
+#title - AIO BootCD's :
+#root()
+
+
+iftitle [if exist /iso_hiren.iso] Hiren's BootCD v15.2 (fast) \n AIO BootCD \n MiniXP is not Fully-Loaded
+set MYISO=iso_hiren.iso
+find --set-root /%MYISO%
+map /%MYISO% (hd32)
+map --hook
+root (hd32)
+chainloader (hd32)
+boot
+
+
+iftitle [if exist /iso_hiren.iso] UNTESTED Hirens BootCD (using winvblock.ima.gz) \n AIO BootCD
+set MYISO=iso_hiren.iso
+map /%MYISO% (0xff)
+map --mem /boot/winvblock.ima.gz (fd0)
+map --mem /boot/winvblock.ima.gz (fd1)
+map --hook
+root (0xff)
+chainloader (0xff)
+boot
+
+
+iftitle [if exist /iso_hiren.iso] Hirens BootCD (from Memory .. better : MiniXP is Full-Loaded) \n AIO BootCD \n ISO size : ~590MB
+set MYISO=iso_hiren.iso
+map --mem /%MYISO% (0xff)
+map --hook
+root (0xff)
+chainloader (0xff)
+boot
+
+
+iftitle [if exist /iso_ubcd.iso] Ultimate BootCD \n AIO BootCD
+set MYISO=iso_ubcd.iso
+map /%MYISO% (hd32)
+map --hook 
+root (hd32) 
+chainloader () 
+boot
+
+
+iftitle [if exist /iso_ubcd.iso] UNTESTED (from Hiren) Ultimate BootCD v5.03 (Alternative) \n AIO BootCD
+set MYISO=iso_ubcd.iso
+find --set-root /%MYISO%
+map /%MYISO% (hd32)
+map --hook
+chainloader (hd32)
+
+
+iftitle [if exist /iso_ubcd.iso] UNTESTED Ultimate BootCD (using winvblock.ima.gz) \n AIO BootCD
+set MYISO=iso_ubcd.iso
+map /%MYISO% (0xff)
+map --mem /boot/winvblock.ima.gz (fd0)
+map --mem /boot/winvblock.ima.gz (fd1)
+map --hook
+root (0xff)
+chainloader (0xff)
+boot
+
+
+iftitle [if exist /iso_ubcd.iso] Ultimate BootCD (Alternative : from Memory & using firadisk.gz) \n AIO BootCD \n ISO size : ~300MB
+set MYISO=iso_ubcd.iso
+find --set-root --ignore-floppies --ignore-cd /%MYISO%
+map --mem /boot/firadisk.gz (fd0)
+map --mem /%MYISO% (0xff)
+map --hook
+root (0xff)
+chainloader (0xff)
+boot
+
+
+#title - Tools/Misc. :
+#root()
+
+
+iftitle [if exist /iso_ptdoctor.iso] Partition Table Doctor v3.5 \n Tools/Misc. \n Not recommended : Use only to either take MBR backups or restore
+set MYISO=iso_ptdoctor.iso
+map /%MYISO% (hd32)
+map --hook
+chainloader (hd32)
+boot
+
+
+
+iftitle [if exist /iso_OfflineWindowsPassword&RegistryEditor.iso] Offline Windows Password & Registry Editor \n Tools/Misc.
+set MYISO=iso_OfflineWindowsPassword&RegistryEditor.iso
+map --mem (md)0x800+4 (99)
+map /%MYISO% (0xff)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+write (99) [FiraDisk]\nStartOptions=cdrom,vmem=find:/%MYISO%;\n\0
+chainloader (0xff)/BOOTMGR || chainloader (0xff)
+boot
+
+
+
+#title - Unix OS's :
+#root ()
+
+
+#title             ----- Backtrack -----
+#root()
+
+
+iftitle [if exist /iso_backtrack5.iso] UNTESTED BackTrack 5 \n Unix OS
+set MYISO=iso_backtrack5.iso
+ls /%MYISO%
+find --set-root /%MYISO%
+map --heads=0 --sectors-per-track=0 /%MYISO% (0xff) || map --heads=0 --sectors-per-track=0 --mem /%MYISO% (0xff)
+map --hook
+chainloader (0xff)
+boot
+
+
+iftitle [if exist /iso_backtrack5.iso] UNTESTED Alternative : BackTrack 5 \n Unix OS
+set MYISO=iso_backtrack5.iso
+find --set-root /%MYISO%
+map /%MYISO% (0xff)
+map --hook
+root (0xff)
+kernel /boot/casper/vmlinuz file=/cdrom/preseed/custom.seed boot=casper iso-scan/filename=/%MYISO% splash quiet --
+initrd /boot/casper/initrd.lz 
+boot
+
+
+#title             ----- Ubuntu -----
+#root()
+
+
+iftitle [if exist /ubuntu.iso] Install Ubuntu 18.04 LTS \n ubuntu.iso \n Unix OS \n (loads iso to mem)
+set MYISO=ubuntu.iso
+find --set-root /%MYISO%
+map --mem /%MYISO% (0xff) || map --heads=0 --sectors-per-track=0 /%MYISO% (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=/%MYISO% quiet splash
+#kernel (loop)/casper/vmlinuz boot=casper iso-scan/filename=$isofile locale=en_US.UTF-8 liveimg noprompt persistent noeject quiet splash --
+initrd /casper/initrd.lz
+boot
+
+
+#title X Installed Ubuntu 16.04
+#fallback 3
+#root (hd{disk number},{partition number})
+#kernel /boot/vmlinuz-4.4.0-36-generic root=/dev/sdXX ro
+#initrd /boot/initrd.img-4.4.0-36-generic
+#boot
+
+
+#title             ----- CentOS -----
+#root()
+
+
+iftitle [if exist /iso_centos.iso] UNTESTED CentOS-i386-LiveCD \n Unix OS
+set MYISO=iso_centos.iso
+find --set-root /%MYISO%
+map /%MYISO% (0xff)  || map --mem /%MYISO% (0xff)
+map --hook
+root (0xff)
+kernel /boot/casper/vmlinuz.efi noprompt boot=casper only-ubiquity iso-scan/filename=/%MYISO% quiet splash --
+initrd /boot/casper/initrd.lz 
+boot
+
+
+#title             ----- XiaoPan -----
+#root()
+
+
+iftitle [if exist /iso_xiaopan.iso] XiaoPan (for Wireless Hacking) \n Unix OS \n To Hack WPA/WPA2 Wireless networks
+set MYISO=iso_xiaopan.iso
+uuid (bd) && call set UUID=%^?%
+map /%MYISO% (0xff)
+map --hook
+root (0xff)
+set mydata=
+if exist (bd)/xi.tgz set mydata=mydata=xi
+kernel /boot/casper/vmlinuz quiet tinycore iso=UUID=%UUID%/%MYISO% waitusb=5 %mydata%
+initrd /boot/core.gz
+boot
+
+
+#title - OTHERS :
+#root()
+
+
+iftitle [if exist /iso_pwhe5.iso] UNTESTED1 Partition Wizard 5 \n OTHERS
+find --set-root /pwhe5.iso
+map /pwhe5.iso (hd32)
+map --hook
+root (hd32)
+chainloader (hd32)
+
+
+iftitle [if exist /iso_okr8.iso] WIN8_OKR8.0 \n OTHERS
+set MYISO=iso_okr8.iso
+map /%MYISO% (hd32)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+chainloader (hd32)
+boot
+
+
+iftitle [if exist /iso_pcunlocker.iso] N iso_pcunlocker \n OTHERS
+set MYISO=iso_pcunlocker.iso
+map --mem (md)0x800+4 (99)
+map /%MYISO% (0xff)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+write (99) [FiraDisk]\nStartOptions=cdrom,vmem=find:/%MYISO%;\n\0
+chainloader (0xff)/BOOTMGR || chainloader (0xff)
+boot
+
+
+iftitle [if exist /iso_ebcd.iso] N iso_ebcd \n OTHERS
+set MYISO=iso_ebcd.iso
+map --mem (md)0x800+4 (99)
+map /%MYISO% (0xff)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+write (99) [FiraDisk]\nStartOptions=cdrom,vmem=find:/%MYISO%;\n\0
+chainloader (0xff)/BOOTMGR || chainloader (0xff)
+boot
+
+
+iftitle [if exist /iso_ophcrack-vista-livecd.iso] X UNTESTED OphCrack Password Cracker Vista from ISO (using partnew) \n OTHERS
+set MYISO=iso_ophcrack-vista-livecd.iso
+find --set-root /%MYISO%
+map /%MYISO% (0xff)
+map --hook
+root (0xff)
+kernel /boot/bzImage rw root=/dev/null vga=normal lang=C kmap=us screen=1024x768x16 autologin
+initrd /boot/rootfs.gz 
+
+
+iftitle [if exist /iso_ophcrack-vista-livecd.iso] X OphCrack Password Cracker Vista from ISO (using partnew) \n OTHERS
+set MYISO=iso_ophcrack-vista-livecd.iso
+find --set-root /%MYISO%
+map /%MYISO% (hd32)
+map --hook
+root (hd32)
+chainloader (hd32)
+boot
+
+
+iftitle [if exist /iso_ophcrack-vista-livecd.iso] X OphCrack Password Cracker Vista from ISO (using partnew) \n OTHERS
+set MYISO=iso_ophcrack-vista-livecd.iso
+find --set-root %ISO%
+parttype (hd0,3) | set check=
+set check=%check:~-5,4% 
+if %check%==0x00 partnew (hd0,3) 0x00 %ISO%
+if NOT %check%==0x00 echo ERROR: Partion Table entry 4 already exists - so will not map %ISO% to ptn 4 ! && pause --wait=3 && configfile ()/menu.lst 
+map  /%ISO% (0xff)
+map --hook
+root (0xff)
+chainloader (0xff)
+boot
+
+
+
+
+
+#title - Commands :
+#root()
+
+title ( Choose ISO )
+configfile ()/boot/menuISOFileList.lst
+
+#title CommandLine (grub-legacy)
+#commandline
+
+title Reboot
+#echo Rebooting in 2 seconds
+#pause --wait=2
+reboot
+
+title Shutdown
+#echo Shutting down in 2 seconds
+#pause --wait=2
+halt
+
+

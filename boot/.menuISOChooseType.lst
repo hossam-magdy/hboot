@@ -1,0 +1,116 @@
+# This menu is for choosing HOW TO BOOT the choosed ISO file (from menuISOFileList)
+# %MYISO% variable should be already set
+
+
+timeout 30
+default 0
+
+
+title << Main Menu
+configfile ()/menu.lst
+
+
+title Choose ISO
+configfile ()/boot/.menuISOFileList.lst
+
+
+title Load ( %MYISO% ) as:
+root()
+
+
+title - Windows PE (Preinstallation Environment)
+cat /boot/spaces.txt > /Win7PESE.ini
+write ()/Win7PESE.ini [IsoInfo]\r\nIsoName=%MYISO%\r\n
+map /%MYISO% (0xff)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+chainloader (0xff)/BOOTMGR || chainloader (0xff)
+
+
+title - Installation of Windows 7/8/8.1/10 \n Lets you choose product key based on Windows EDITION
+configfile ()/boot/.menuISOWinChooseProdKey.lst
+
+
+title - Installation of Windows XP (step 1)
+find --set-root --ignore-floppies --ignore-cd /boot/winvblock.ima.gz
+map --mem /boot/winvblock.ima.gz (fd0)
+map --mem /boot/winvblock.ima.gz  (fd1)
+# if this loads the ISO into memory slowly - then you need to run WinContig on the ISO file on your USB drive to speed it up!
+map  /%MYISO% (0xff) || map  --mem /%MYISO% (0xff)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+root (0xff)
+if not exist (0xff)/i386/setupldr.bin echo WARNING: The ISO is not an XP Install ISO!!! && pause
+chainloader (0xff)/i386/setupldr.bin || chainloader (0xff)/I386/SETUPLDR.BIN || chainloader (0xff)
+echo -------------------------------------------------------------
+echo 1- Press F6 at the beginning of blue screen.
+echo 2- Press S to choose a driver for removable media storage.
+echo 3- Choose WinVBlock (4th choice) / FiraDisk.
+echo 4- Press Enter & proceed the installation process.
+echo -------------------------------------------------------------
+echo !!!!!!!!!!!!!!! Remember Serial Number !!!!!!!!!!!!!!!!
+echo            " D36RK-QDFFD-BTWWY-BT7KK-43MGM "           
+echo -------------------------------------------------------------
+echo ~~~ ORIGINAL Recommendations :
+echo If you have an AHCI HDD you MUST press F6 when prompted, then hit S to select WinVBlock or FiraDisk (recommended) driver, then hit S again to select your AHCI driver (e.g. Atom Netbook=WinVBlock+ICH7R/DH, DQ67 series 6=FiraDisk+Desktop,Workstation,Server Express)
+pause Now quickly hit [Enter] twice (and then F6 if you need to install an AHCI driver) ...
+boot
+
+
+title - Installation of Windows XP (step 2)
+find --set-root --ignore-floppies --ignore-cd /boot/winvblock.ima.gz
+# we must load the ISO into memory, so it will be slow to load here ...
+map --mem /%MYISO% (0xff) || map  /%MYISO% (0xff)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+rootnoverify (hd0,0)
+chainloader (hd0)+1
+echo -------------------------------------------------------------
+echo !!!!!!!!!!!!!!! Remember Serial Number !!!!!!!!!!!!!!!!
+echo            " D36RK-QDFFD-BTWWY-BT7KK-43MGM "           
+echo -------------------------------------------------------------
+pause Press ENTER and then unplug this USB drive...
+boot
+
+
+title - Map to (hd32) + Exchange (hd0),(hd1) => then Boot
+map /%MYISO% (hd32)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+chainloader (hd32)
+boot
+
+
+title - Map to (hd32) => then Boot
+find --set-root /%MYISO%
+map --mem /%MYISO% (hd32)
+map --hook
+chainloader (hd32)
+
+
+title - Map to (fd0) => then Boot
+find --set-root /%MYISO%
+map --mem /%MYISO% (fd0)
+map --hook
+root (fd0)
+chainloader +1
+
+
+title - Map to (0xff) => then Boot via firadisk
+map --mem (md)0x800+4 (99)
+map /%MYISO% (0xff)
+map (hd0) (hd1)
+map (hd1) (hd0)
+map --hook
+write (99) [FiraDisk]\nStartOptions=cdrom,vmem=find:/%MYISO%;\n\0
+chainloader (0xff)/BOOTMGR || chainloader (0xff)
+boot
+
+
+title ( Back To Main Menu )
+configfile ()/menu.lst
+
