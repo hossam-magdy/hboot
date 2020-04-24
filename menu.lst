@@ -1,4 +1,4 @@
-############ ISO Download links ############
+#################### ISO Download links ####################
 ## Recommended download links:
 # Windows 10:
 #   - https://www.microsoft.com/en-us/software-download/windows10ISO/
@@ -7,24 +7,7 @@
 #   - http://releases.ubuntu.com
 # Windows 7 PE (Preinstalled Environment)/(Live):
 #   - https://archive.org/download/win7pe-x64/Win7PE_x64.iso
-#
-## Further detailed links:
-#-ubuntu-20.04-desktop-amd64.iso                  #http://releases.ubuntu.com/20.04/ubuntu-20.04-desktop-amd64.iso
-#-ubuntu-18.04.4-desktop-amd64.iso                #http://releases.ubuntu.com/18.04/ubuntu-18.04.4-desktop-amd64.iso
-# Win10_1909_English_x64.iso or any Windows iso   #https://www.microsoft.com/en-us/software-download/windows10ISO/
-#-Win7PE_x64.iso                                  #http://bit.ly/win7pe-x64
-#-win10_x64.iso                                   (Obsolete, please use original iso name)
-#-win10_x86.iso                                   (Obsolete, please use original iso name)
-#-win7_x64.iso                                    #http://bit.ly/win7sp1-x64        en_windows_7_enterprise_with_sp1_x64_dvd_u_677651.iso
-#-win7_x86.iso                                    #http://bit.ly/win7sp1-x86        en_windows_7_enterprise_with_sp1_x86_dvd_u_677710.iso
-#-win_xp_x86.iso
-## Other good links
-#http://bit.ly/win10v1803-x64	Win10_1803_English_x64.iso (Pro, Core)
-#http://bit.ly/win10v1709-x64-vl	en_windows_10_multi-edition_vl_version_1709_updated_sept_2017_x64_dvd_100090741.iso
-#http://bit.ly/win10v1709-x86-vl	en_windows_10_multi-edition_vl_version_1709_updated_sept_2017_x86_dvd_100090759.iso
-#http://bit.ly/win10v1703-x64	en_windows_10_enterprise_version_1703_updated_march_2017_x86_dvd_10188981.iso	DE7F15A1DE19BD9507B5B5693E3F56D10F662864
-#http://bit.ly/win10v1703-x86	en_windows_10_enterprise_version_1703_updated_march_2017_x64_dvd_10189290.iso	77d5e7c91b5dbbee410fb6c57cb944238bf7176a
-############################################
+############################################################
 
 timeout 30
 default 0
@@ -77,7 +60,6 @@ write 0x8274 0x2001
 #------------------------------------------------------------- Commands saved as comments for later usage
 #iftitle [if exist (bd)/test.img] find /test.img on any drive and boot to it
 #savedefault --wait=2
-
 
 ############################################################
 ############################################################

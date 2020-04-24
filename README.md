@@ -2,12 +2,12 @@
 
 A homemade “multi-partition” “multi-iso-boot” USB disk: install Ubuntu, Windows 7/10, load WindowsPE, and more …
 
-The typical ISO files that are supported:
+The typical supported ISO files:
 
 - [ubuntu-20.04-desktop-amd64.iso](https://releases.ubuntu.com/20.04/ubuntu-20.04-desktop-amd64.iso)
 - [Win10_1909_English_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
 - [Win10_1909_German_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
-- [Win7PE_x64.iso](https://archive.org/download/win7pe-x64/Win7PE_x64.iso)
+- [Win7PE_x64.iso](https://archive.org/download/win7pe-x64/Win7PE_x64.iso) (see [screenshots](https://archive.org/details/win7pe-x64))
 
 ## Overview
 
