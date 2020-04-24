@@ -1,13 +1,21 @@
 # HBoot
 
-A homemade “multi-partition” “multi-iso-boot” USB disk: install Ubuntu, Windows 7/10, load WindowsPE, and more …
+A tool to enable you boot directly from multiple ISO files on a USB stick.
 
-The typical supported ISO files:
+No need anymore for [Windows USB/DVD Download Tool](https://www.microsoft.com/en-us/download/windows-usb-dvd-download-tool), which is great tool, but eventually it extracts the Windows ISO making your USB stick unusable for any other OS installation (Ubuntu or even different other Windows ISO).
+
+Using this tool you can have a USB stick divided into 2 partitions (Boot + Data) so you can still use the Data partition for personal storage. And even in the Boot partition will not be packed with multiple files as the ISO files are directly copied.
+
+Once this tool is setup on a USB stick, you can copy any/all of the following ISO files, then boot from any of them:
 
 - [ubuntu-20.04-desktop-amd64.iso](https://releases.ubuntu.com/20.04/ubuntu-20.04-desktop-amd64.iso)
 - [Win10_1909_English_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
 - [Win10_1909_German_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
 - [Win7PE_x64.iso](https://archive.org/download/win7pe-x64/Win7PE_x64.iso) (see [screenshots](https://archive.org/details/win7pe-x64))
+
+**Screenshot of the boot menu**
+
+![Boot Menu Screenshot](./docs/HBoot-screenshot.png)
 
 ## Overview
 
@@ -36,10 +44,6 @@ USB disk can boot from the following:
 - Acronis True Image ISO
 - Norton Ghost (2003/v15) IMG/ISO
 - and possibly more …
-
-**Screenshot**
-
-![Screenshot](./docs/HBoot-screenshot.png)
 
 ## Technical details
 
