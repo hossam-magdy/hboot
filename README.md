@@ -2,7 +2,7 @@
 
 A tool to enable you boot directly from multiple ISO files on a USB stick.
 
-No need anymore for [Windows USB/DVD Download Tool](https://www.microsoft.com/en-us/download/windows-usb-dvd-download-tool), which is great tool, but eventually it extracts the Windows ISO making your USB stick unusable for any other OS installation (Ubuntu or even different other Windows ISO).
+No need anymore for [Windows USB/DVD Download Tool](https://www.microsoft.com/en-us/download/windows-usb-dvd-download-tool), which is great tool, but eventually extracts the Windows ISO making your USB stick unusable for any other OS installation (Ubuntu or even different other Windows ISO) or even for decent personal files.
 
 Using this tool you can have a USB stick divided into 2 partitions (Boot + Data) so you can still use the Data partition for personal storage. And even in the Boot partition will not be packed with multiple files as the ISO files are directly copied.
 
@@ -16,6 +16,17 @@ Once this tool is setup on a USB stick, you can copy any/all of the following IS
 **Screenshot of the boot menu**
 
 ![Boot Menu Screenshot](./docs/HBoot-screenshot.png)
+
+It relies on [GRUB Legacy](https://www.gnu.org/software/grub/grub-legacy.html) [v0.97](http://mirrors.kernel.org/ubuntu/pool/main/g/grub/grub_0.97-29ubuntu66_amd64.deb), and fixed [boot](https://gparted.org/display-doc.php?name=help-manual&lang=C#gparted-fix-grub-boot-problem), that has doc from [archlinux](https://wiki.archlinux.org/index.php/GRUB_Legacy).
+
+<details>
+<summary>**For GRUB2 upgrade**</summary>
+Install: https://unix.stackexchange.com/a/36823
+Config:  https://askubuntu.com/questions/367011/boot-windows-7-iso-from-grub2
+No file writing:
+  - https://askubuntu.com/a/83279
+  - https://www.gnu.org/software/grub/manual/grub/grub.html#Environment-block
+</details>
 
 ## Overview
 
