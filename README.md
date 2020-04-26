@@ -113,35 +113,36 @@ This _tutorial_ was used to be a [blog post](https://hossam6236.wordpress.com/20
 
 <details>
 <summary>Reference/technical links:</summary>
-https://wiki.archlinux.org/index.php/GRUB_Legacy
-https://gparted.org/display-doc.php?name=help-manual&lang=C#gparted-fix-grub-boot-problem
-http://mirrors.kernel.org/ubuntu/pool/main/g/grub/grub_0.97-29ubuntu66_amd64.deb
 
-https://help.ubuntu.com/community/Grub2/ISOBoot
-https://wiki.archlinux.org/index.php/Multiboot_USB_drive
-https://opensource.com/article/16/11/managing-devices-linux
-https://help.ubuntu.com/community/Grub2/Upgrading#Reverting_to_GRUB_Legacy
-https://www.rmprepusb.com/tutorials/grub4dos/grub4dos-internal-variables-and-functions
-https://thestarman.pcministry.com/asm/mbr/GRUB.htm
+- https://wiki.archlinux.org/index.php/GRUB_Legacy
+- https://gparted.org/display-doc.php?name=help-manual&lang=C#gparted-fix-grub-boot-problem
+- http://mirrors.kernel.org/ubuntu/pool/main/g/grub/grub_0.97-29ubuntu66_amd64.deb
+- https://help.ubuntu.com/community/Grub2/ISOBoot
+- https://wiki.archlinux.org/index.php/Multiboot_USB_drive
+- https://opensource.com/article/16/11/managing-devices-linux
+- https://help.ubuntu.com/community/Grub2/Upgrading#Reverting_to_GRUB_Legacy
+- https://www.rmprepusb.com/tutorials/grub4dos/grub4dos-internal-variables-and-functions
+- https://thestarman.pcministry.com/asm/mbr/GRUB.htm
 
 </details>
 
 <details>
-<summary>**For GRUB2 upgrade**</summary>
-Install: https://unix.stackexchange.com/a/36823
-Config:  https://askubuntu.com/questions/367011/boot-windows-7-iso-from-grub2
-No file writing:
+<summary>Links for GRUB2 upgrade:</summary>
+
+- Install: https://unix.stackexchange.com/a/36823
+- Config: https://askubuntu.com/questions/367011/boot-windows-7-iso-from-grub2
+- No file writing:
   - https://askubuntu.com/a/83279
   - https://www.gnu.org/software/grub/manual/grub/grub.html#Environment-block
-https://www.aioboot.com/en/
-using wimboot in grub2 for win iso: https://www.rmprepusb.com/tutorials/145-grub2winiso
-`rsync`
+- https://www.aioboot.com/en/
+- using wimboot in grub2 for win iso: https://www.rmprepusb.com/tutorials/145-grub2winiso
+- `rsync`
 </details>
 
 ## TODO
 
 - in grub_installer: add prompt to user to enter boot partition size
-- create similar installer for windows … using BootICE cli: see [this](http://reboot.pro/topic/21271-how-to-use-bootice-creat-two-partitions-command-line/) and [this](https://www.portablefreeware.com/forums/viewtopic.php?t=20478)
+- create similar installer for windows … using BootICE cli: see [this](http://reboot.pro/topic/21271-how-to-use-bootice-creat-two-partitions-command-line/) and [this](https://www.portablefreeware.com/forums/viewtopic.php?t=20478), then move tutorial to sub md file
 - check/use `rsync` and its windows equivalent
 - unify both installers interface and rename to **HBoot installer**
 - cleanup unused files/tools: boot/BCD, …
