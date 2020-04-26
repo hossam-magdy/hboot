@@ -3,7 +3,6 @@
 SET _SCRIPT_DRIVE=%~d0
 SET _SCRIPT_PATH=%~dp0
 SET _ZipBootFilesInRoot=%_SCRIPT_DRIVE%/boot/.bootfiles-rootdir.zip
-SET _7za_EXE=%_SCRIPT_DRIVE%/boot/.7za.exe
 SET _ContigEXETool=%_SCRIPT_DRIVE%/boot/.tool_SysinternalsContig.exe
 SET FragISOLogFile=%TEMP%/.(Fragmented_ISO_Files).log
 SET menuISOFileList=%_SCRIPT_DRIVE%/boot/.menuISOFileList.lst
@@ -60,12 +59,6 @@ echo DONE.
 echo ###################################################
 echo ############## Protecting Boot Files ##############
 echo ###################################################
-if exist "%_7za_EXE%" (
-	if exist "%_ZipBootFilesInRoot%" (
-		echo Re-extracting boot files ...
-		"%_7za_EXE%" e "%_ZipBootFilesInRoot%" -o%_SCRIPT_DRIVE% -r -aos -y >nul 2>&1
-	)
-)
 ::attrib -s +h .\boot_FilesToCopy>nul
 attrib +s +h .\autounattend.xml>nul
 attrib +s +h .\grldr>nul
