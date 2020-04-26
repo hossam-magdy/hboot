@@ -17,16 +17,7 @@ Once this tool is setup on a USB stick, you can copy any/all of the following IS
 
 ![Boot Menu Screenshot](./docs/HBoot-screenshot.png)
 
-It relies on [GRUB Legacy](https://www.gnu.org/software/grub/grub-legacy.html) [v0.97](http://mirrors.kernel.org/ubuntu/pool/main/g/grub/grub_0.97-29ubuntu66_amd64.deb), and fixed [boot](https://gparted.org/display-doc.php?name=help-manual&lang=C#gparted-fix-grub-boot-problem), that has doc from [archlinux](https://wiki.archlinux.org/index.php/GRUB_Legacy).
-
-<details>
-<summary>**For GRUB2 upgrade**</summary>
-Install: https://unix.stackexchange.com/a/36823
-Config:  https://askubuntu.com/questions/367011/boot-windows-7-iso-from-grub2
-No file writing:
-  - https://askubuntu.com/a/83279
-  - https://www.gnu.org/software/grub/manual/grub/grub.html#Environment-block
-</details>
+It relies on [GRUB Legacy (0.97)](https://www.gnu.org/software/grub/grub-legacy.html).
 
 ## Overview
 
@@ -119,3 +110,30 @@ This _tutorial_ was used to be a [blog post](https://hossam6236.wordpress.com/20
 
 - tracking changes of `menu.lst` due to new releases of Windows and Ubuntu
 - easier maintenance of files here than google drive
+
+<details>
+<summary>Reference/technical links:</summary>
+https://wiki.archlinux.org/index.php/GRUB_Legacy
+https://gparted.org/display-doc.php?name=help-manual&lang=C#gparted-fix-grub-boot-problem
+http://mirrors.kernel.org/ubuntu/pool/main/g/grub/grub_0.97-29ubuntu66_amd64.deb
+
+https://help.ubuntu.com/community/Grub2/ISOBoot
+https://wiki.archlinux.org/index.php/Multiboot_USB_drive
+https://opensource.com/article/16/11/managing-devices-linux
+https://help.ubuntu.com/community/Grub2/Upgrading#Reverting_to_GRUB_Legacy
+https://www.rmprepusb.com/tutorials/grub4dos/grub4dos-internal-variables-and-functions
+https://thestarman.pcministry.com/asm/mbr/GRUB.htm
+
+</details>
+
+<details>
+<summary>**For GRUB2 upgrade**</summary>
+Install: https://unix.stackexchange.com/a/36823
+Config:  https://askubuntu.com/questions/367011/boot-windows-7-iso-from-grub2
+No file writing:
+  - https://askubuntu.com/a/83279
+  - https://www.gnu.org/software/grub/manual/grub/grub.html#Environment-block
+https://www.aioboot.com/en/
+using wimboot in grub2 for win iso: https://www.rmprepusb.com/tutorials/145-grub2winiso
+`rsync`
+</details>
