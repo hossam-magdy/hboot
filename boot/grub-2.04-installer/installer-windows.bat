@@ -17,6 +17,7 @@ SET TARGET_VOLUME=%TARGET_VOLUME:~0,1%:
 
 ::###################### TARGET_DRIVE (number after //./PHYSICALDRIVE{HERE} : 1,2,...)
 FOR /F "tokens=* USEBACKQ" %%F IN (`CALL _VolumeLetterToDiskID.bat %TARGET_VOLUME%`) DO SET TARGET_DRIVE=%%F
+IF %TARGET_DRIVE% equ 0 ( ECHO "Exiting… should not run on device 0" && EXIT 1 )
 
 ::###################### INSTALL_CMD
 SET BOOT_DIR=%TARGET_VOLUME%\boot
@@ -25,5 +26,6 @@ ECHO INSTALL_CMD=%INSTALL_CMD%
 ECHO 'Confirm?'
 PAUSE
 
-CALL %INSTALL_CMD% && copy grub.cfg %BOOT_DIR%\grub
+CALL %INSTALL_CMD%
+copy grub.cfg %BOOT_DIR%\grub
 :: PAUSE
