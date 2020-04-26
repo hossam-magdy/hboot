@@ -141,7 +141,6 @@ This _tutorial_ was used to be a [blog post](https://hossam6236.wordpress.com/20
 
 ## TODO
 
-- in grub_installer (ubuntu): add prompt to user to enter boot partition size
 - create similar installer for windows … using BootICE cli: see [this](http://reboot.pro/topic/21271-how-to-use-bootice-creat-two-partitions-command-line/) and [this](https://www.portablefreeware.com/forums/viewtopic.php?t=20478), then move tutorial to sub md file
 - check/use `rsync` and its windows equivalent
 - unify both installers interface and rename to **HBoot installer**
