@@ -57,8 +57,8 @@ umount $TARGET_DEV? &>/dev/nul
 echo "Partitioning …"
 parted --align optimal --script $TARGET_DEV \
   mklabel msdos \
-  mkpart primary ntfs 0% 10GB \
-  mkpart primary ntfs 10GB 100% \
+  mkpart primary ntfs 0% $SIZE_BOOT \
+  mkpart primary ntfs $SIZE_BOOT 100% \
   set 1 boot on >/dev/nul
 # Format (quick)
 echo "Formatting …"
