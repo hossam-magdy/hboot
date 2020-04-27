@@ -8,13 +8,18 @@
 # - sudo
 # - parted
 # - read -p
+# - umount
 # - mkfs.ntfs
 # - dd
 
-SUDO=$([ "$EUID" -ne "0" ] && echo "sudo")
+[ "$EUID" -eq 0 ] || {
+  # echo "Runnig with 'sudo'"
+  exec sudo "$0" "$@"
+  exit $?
+}
 
 function get_device_size() {
-  SIZE_TOTAL=$($SUDO parted -l $1 | grep "Disk $1: ")
+  SIZE_TOTAL=$(parted -l $1 | grep "Disk $1: ")
   [ -z "$SIZE_TOTAL" ] && exit 1
   echo ${SIZE_TOTAL/#Disk $1: /}
 }
@@ -47,22 +52,20 @@ read -s -p "Press [Enter] to continue …" _
 echo -e "\b\r\b\r                              " # to overwrite the "Please … live above"
 echo "Starting …"
 ################ WIPE/ERASE the device, create new PartitionTable
-# Erase the first 9216 bytes in device (the bytes where MBR, PT, GRUB will be located)
-# $SUDO dd of=$TARGET_DEV if=/dev/zero bs=1 count=9216
 # Unmount
 echo "Unmounting …"
-$SUDO umount $TARGET_DEV? 2>/dev/nul
+umount $TARGET_DEV? &>/dev/nul
 # Partition: 1 NTFS
 echo "Partitioning …"
-$SUDO parted --align optimal --script $TARGET_DEV \
+parted --align optimal --script $TARGET_DEV \
   mklabel msdos \
   mkpart primary ntfs 0% 10GB \
   mkpart primary ntfs 10GB 100% \
   set 1 boot on >/dev/nul
 # Format (quick)
 echo "Formatting …"
-$SUDO mkfs.ntfs -QL $LABEL ${TARGET_DEV}1 >/dev/nul
-$SUDO mkfs.ntfs -Q ${TARGET_DEV}2 >/dev/nul
+mkfs.ntfs -QL $LABEL ${TARGET_DEV}1 &>/dev/nul
+mkfs.ntfs -Q ${TARGET_DEV}2 &>/dev/nul
 
 ################ Write (MBR … and more)
 ### Write 9KB to the first sectors (MBR + GRUB boot sectors)
@@ -71,18 +74,19 @@ $SUDO mkfs.ntfs -Q ${TARGET_DEV}2 >/dev/nul
 #  MBR   P_T   GRU   P_T    GRU     (Goal)
 #  MBR   P_T   0000000000000000     (Initial)
 echo "Writing MBR …"
-$SUDO dd of=$TARGET_DEV if=$MBR_FILEPATH seek=0 skip=0 bs=1 count=440 2>/dev/nul
-$SUDO dd of=$TARGET_DEV if=$MBR_FILEPATH seek=512 skip=512 bs=1 count=440 2>/dev/nul
-$SUDO dd of=$TARGET_DEV if=$MBR_FILEPATH seek=1024 skip=1024 bs=1 count=8192 2>/dev/nul
+dd of=$TARGET_DEV if=$MBR_FILEPATH seek=0 skip=0 bs=1 count=440 2>/dev/nul
+dd of=$TARGET_DEV if=$MBR_FILEPATH seek=512 skip=512 bs=1 count=440 2>/dev/nul
+dd of=$TARGET_DEV if=$MBR_FILEPATH seek=1024 skip=1024 bs=1 count=8192 2>/dev/nul
 # Clone P_T for GRUB
-$SUDO dd if=$TARGET_DEV of=$TARGET_DEV skip=440 seek=952 bs=1 count=72 2>/dev/nul
+dd if=$TARGET_DEV of=$TARGET_DEV skip=440 seek=952 bs=1 count=72 2>/dev/nul
 # echo "MBR and GRUB was written to the disk successfully"
 
-# ################
-# #X BK FULL
-# $SUDO dd if=/dev/sdb of=./grub1_32gbFull.mbr skip=0 ibs=1 count=9216
-# ################
-# #X DUMP
-# $SUDO dd if=$TARGET_DEV of=./grub1Dump.mbr skip=0 ibs=1 count=9216
+# ################ Dev Reference Commands:
+# ### BK FULL
+# dd if=/dev/sdb of=./grub1_32gbFull.mbr skip=0 ibs=1 count=9216
+# ### DUMP
+# dd if=$TARGET_DEV of=./grub1Dump.mbr skip=0 ibs=1 count=9216
+# ### ERASE the first 9216 bytes in device (the bytes where MBR, PT, GRUB will be located)
+# dd of=$TARGET_DEV if=/dev/zero bs=1 count=9216
 # ################
 echo "Finished!"
