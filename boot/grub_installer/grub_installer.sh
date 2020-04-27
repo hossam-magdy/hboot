@@ -24,7 +24,6 @@ function get_device_size() {
   echo ${SIZE_TOTAL/#Disk $1: /}
 }
 
-LABEL="HNew"
 MBR_FILENAME="./grub_mbr" # relative to this file
 DEFAULT_SIZE_BOOT="10GB"  # 1KB = 1000B , 1KiB = 1024B
 
@@ -45,7 +44,6 @@ echo
 echo "- Target device:   $TARGET_DEV"
 echo "- Boot partition:  $SIZE_BOOT / $SIZE_TOTAL"
 # echo "- MBR file: $MBR_FILEPATH"
-# echo "- Label: $LABEL"
 echo
 read -s -p "Press [Enter] to continue …" _
 
@@ -64,8 +62,8 @@ parted --align optimal --script $TARGET_DEV \
   set 1 boot on >/dev/nul
 # Format (quick)
 echo "Formatting …"
-mkfs.ntfs -QL $LABEL ${TARGET_DEV}1 &>/dev/nul
-mkfs.ntfs -Q ${TARGET_DEV}2 &>/dev/nul
+mkfs.ntfs -QL "HBoot" ${TARGET_DEV}1 &>/dev/nul
+mkfs.ntfs -QL "HData" ${TARGET_DEV}2 &>/dev/nul
 
 ################ Write (MBR … and more)
 ### Write 9KB to the first sectors (MBR + GRUB boot sectors)
