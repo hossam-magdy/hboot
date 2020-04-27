@@ -146,6 +146,7 @@ This _tutorial_ was used to be a [blog post](https://hossam6236.wordpress.com/20
 - cleanup unused files/tools: boot/BCD, …
 - move windows-specific tools to own dir: `init-windows-tools`
 - update windows_product_keys.txt file and ensure it is loaded, like in grub2 branch
+- move `*.iso` files to `iso` dir
 - in GRUB2 branch:
   - load Windows ISO (again)… using memdisk (slow) AND chainloader/whatever
   - finalize the menu items in `grub.cfg`
