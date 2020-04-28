@@ -76,7 +76,27 @@ pause Press ENTER and then unplug this USB drive...
 boot
 
 
-title - Map to (hd32) + Exchange (hd0),(hd1) => then Boot
+title - Ubuntu 20.04 LTS (Focal Fossa)
+find --set-root /%MYISO%
+map --mem /%MYISO% (0xff) || map --heads=0 --sectors-per-track=0 /%MYISO% (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=/%MYISO% quiet splash
+initrd /casper/initrd
+boot
+
+
+title - Ubuntu 18.04 LTS … or earlier
+find --set-root /%MYISO%
+map --mem /%MYISO% (0xff) || map --heads=0 --sectors-per-track=0 /%MYISO% (0xff)
+map --hook
+root (0xff)
+kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=/%MYISO% quiet splash
+initrd /casper/initrd.lz
+boot
+
+
+title - Map ISO to (hd32) + Exchange (hd0),(hd1) => then Boot
 map /%MYISO% (hd32)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -85,14 +105,14 @@ chainloader (hd32)
 boot
 
 
-title - Map to (hd32) => then Boot
+title - Map ISO to (hd32) => then Boot
 find --set-root /%MYISO%
 map --mem /%MYISO% (hd32)
 map --hook
 chainloader (hd32)
 
 
-title - Map to (fd0) => then Boot
+title - Map ISO to (fd0) => then Boot
 find --set-root /%MYISO%
 map --mem /%MYISO% (fd0)
 map --hook
@@ -100,7 +120,7 @@ root (fd0)
 chainloader +1
 
 
-title - Map to (0xff) => then Boot via firadisk
+title - Map ISO to (0xff) => then Boot via firadisk
 map --mem (md)0x800+4 (99)
 map /%MYISO% (0xff)
 map (hd0) (hd1)

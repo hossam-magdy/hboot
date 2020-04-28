@@ -1,17 +1,28 @@
 
-
-title Set ISO="ubuntu.iso"
-set MYISO=ubuntu.iso
+iftitle [if exist /iso/ubuntu.iso] Set ISO="iso/ubuntu.iso"
+set MYISO=iso/ubuntu.iso
 configfile /boot/.menuISOChooseType.lst
 
-title Set ISO="win10_x64.iso"
-set MYISO=win10_x64.iso
+iftitle [if exist /iso/ubuntu-20.04-desktop-amd64.iso] Set ISO="iso/ubuntu-20.04-desktop-amd64.iso"
+set MYISO=iso/ubuntu-20.04-desktop-amd64.iso
 configfile /boot/.menuISOChooseType.lst
 
-title Set ISO="Win7PE_x64.iso"
-set MYISO=Win7PE_x64.iso
+iftitle [if exist /iso/win10_x64.iso] Set ISO="iso/win10_x64.iso"
+set MYISO=iso/win10_x64.iso
 configfile /boot/.menuISOChooseType.lst
 
-title Set ISO="win7_x64.iso"
-set MYISO=win7_x64.iso
+iftitle [if exist /iso/Win10_1909_English_x64.iso] Set ISO="iso/Win10_1909_English_x64.iso"
+set MYISO=iso/Win10_1909_English_x64.iso
+configfile /boot/.menuISOChooseType.lst
+
+iftitle [if exist /iso/Win10_1909_German_x64.iso] Set ISO="iso/Win10_1909_German_x64.iso"
+set MYISO=iso/Win10_1909_German_x64.iso
+configfile /boot/.menuISOChooseType.lst
+
+iftitle [if exist /iso/win7_x64.iso] Set ISO="iso/win7_x64.iso"
+set MYISO=iso/win7_x64.iso
+configfile /boot/.menuISOChooseType.lst
+
+iftitle [if exist /iso/Win7PE_x64.iso] Set ISO="iso/Win7PE_x64.iso"
+set MYISO=iso/Win7PE_x64.iso
 configfile /boot/.menuISOChooseType.lst
