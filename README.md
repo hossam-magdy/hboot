@@ -141,13 +141,9 @@ This _tutorial_ was used to be a [blog post](https://hossam6236.wordpress.com/20
 
 ## TODO
 
-- create similar installer for windows … using BootICE cli: see [this](http://reboot.pro/topic/21271-how-to-use-bootice-creat-two-partitions-command-line/) and [this](https://www.portablefreeware.com/forums/viewtopic.php?t=20478), then move tutorial to sub md file
+- create installer for windows (like ubuntu one) … using BootICE cli: see [this](http://reboot.pro/topic/21271-how-to-use-bootice-creat-two-partitions-command-line/) and [this](https://www.portablefreeware.com/forums/viewtopic.php?t=20478), then move tutorial to sub md file
 - check/use `rsync` and its windows equivalent
-- unify both installers interface and rename to **HBoot installer**
 - cleanup unused files/tools: boot/BCD, …
-- move windows-specific tools to own dir: `init-windows-tools`
-- update windows_product_keys.txt file and ensure it is loaded, like in grub2 branch
-- move `*.iso` files to `iso` dir
 - in GRUB2 branch:
   - load Windows ISO (again)… using memdisk (slow) AND chainloader/whatever
   - finalize the menu items in `grub.cfg`

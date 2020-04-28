@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Run this file as:
-# - grub_installer.sh [TARGET_DEVICE] [BOOT_SIZE=10GB]
-# - grub_installer.sh /dev/sdd 15GB
+# - install-ubuntu.sh [TARGET_DEVICE] [BOOT_SIZE=10GB]
+# - install-ubuntu.sh /dev/sdd 15GB
 
 # Dependency commands:
 # - sudo

@@ -17,7 +17,7 @@ function scan_iso_files() {
   MARK_CROSS="$S_FG_RED✘$S_FG_RESET"
   MARK_WARN="$S_FG_YELLOW⚠️ $S_FG_RESET"
 
-  # scan recursively and case-insensitively "*.iso" files
+  # scan recursively (regardless ISO_DIR = iso or .) and case-insensitively "*.iso" files
   files=$(find $1 -type f -iname "*.iso")
 
   countBadFiles=0
