@@ -71,25 +71,6 @@ chainloader (hd0)+1
 rootnoverify (hd0)
 
 
-#if exist FL_Path && call :ListFile ! call :ListDrive
-#if exist (hd0,1)/boot/.swap_partitions.g4b (hd0,1)/boot/.swap_partitions.g4b (hd0) 1 SURE
-
-
-title Swap Partitions : ('Boot') <=> ('Data')
-set nPartL=NOT_FOUND
-parttype (hd0,1) > nul
-if #%@retval%>=#7 set nPartL=Data
-if exist (hd0,1)/boot set nPartL=Boot
-if %nPartL%==NOT_FOUND configfile ()/menu.lst
-echo 
-echo The '%nPartL%' partition will be set as accessible
-echo Press any key to continue, ESC to cancel ...
-pause && set /a key=*0x4CB00 ! configfile ()/menu.lst
-find --set-root /boot/.swap_partitions.g4b
-/boot/.swap_partitions.g4b (hd0) 1 SURE
-find --set-root /menu.lst
-configfile ()/menu.lst
-
 ############################################################
 ############################################################
 ############################################################
@@ -371,6 +352,21 @@ configfile ()/boot/menuISOFileList.lst
 
 #title CommandLine (grub-legacy)
 #commandline
+
+iftitle [if exist (hd0,1)/boot/.swap_partitions.g4b] Swap Partitions : ('Boot') <=> ('Data')
+set nPartL=NOT_FOUND
+parttype (hd0,1) > nul
+if #%@retval%>=#7 set nPartL=Data
+if exist (hd0,1)/boot set nPartL=Boot
+if %nPartL%==NOT_FOUND configfile ()/menu.lst
+echo 
+echo The '%nPartL%' partition will be set as accessible
+echo Press any key to continue, ESC to cancel ...
+pause && set /a key=*0x4CB00 ! configfile ()/menu.lst
+find --set-root /boot/.swap_partitions.g4b
+/boot/.swap_partitions.g4b (hd0) 1 SURE
+find --set-root /menu.lst
+configfile ()/menu.lst
 
 title Reboot
 #echo Rebooting in 2 seconds
