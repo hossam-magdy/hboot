@@ -11,6 +11,8 @@ SET _SCRIPT_DIR=%~dp0
 SET ROOT_DIR=%_SCRIPT_DIR%..
 CD %ROOT_DIR%
 SET _BooticeEXETool=%ROOT_DIR%\tools\BOOTICE.exe
+:: Normalize path, see: https://stackoverflow.com/a/6591601
+FOR /F "delims=" %%F IN ("%_BooticeEXETool%") DO SET "_BooticeEXETool=%%~fF"
 
 ::###################### TARGET_DISK_INDEX
 ::::::::: TARGET_VOLUME priorities of setting:
@@ -24,7 +26,7 @@ SET CURRENT_VOLUME=%_SCRIPT_DRIVE%
 :: TODO: fix CALL
 CALL :_ListRemovableVolumeLetter
 SET REMOVABLE_VOLUMELETTERS=%RESULT%
-ECHO Removable volumes detected: %REMOVABLE_VOLUMELETTERS%
+ECHO Removable volumes detected^: %REMOVABLE_VOLUMELETTERS%
 :CheckTargetVolume
 IF "%TARGET_VOLUME%" == "" (
     ECHO %REMOVABLE_VOLUMELETTERS%| FIND "%CURRENT_VOLUME%">Nul && (
@@ -66,13 +68,6 @@ IF %SIZE_BOOT_GB% GTR %TARGET_DISK_SIZE_GB% ( ECHO ERROR^: value of SIZE_BOOT_GB
 SET /a SIZE_BOOT_MB=%SIZE_BOOT_GB% * 1024
 :::::::::
 
-ECHO CURRENT_VOLUME=%CURRENT_VOLUME%
-IF "%TARGET_VOLUME:~1,1%" == ":" ECHO TARGET_VOLUME=%TARGET_VOLUME%
-ECHO TARGET_DISK_INDEX=%TARGET_DISK_INDEX%
-ECHO TARGET_DISK_SIZE_GB=%TARGET_DISK_SIZE_GB% (inaccurate)
-ECHO SIZE_BOOT_GB=%SIZE_BOOT_GB%
-ECHO SIZE_BOOT_MB=%SIZE_BOOT_MB%
-
 ::###################### CMD_PARTITION
 
 :::::::::::::::::::::::::::::::: Partitioning Using Diskpart
@@ -95,28 +90,51 @@ ECHO FORMAT FS=NTFS LABEL=HData QUICK OVERRIDE NOERR >>%DISKPART_SCRIPT%
 ECHO ASSIGN NOERR >>%DISKPART_SCRIPT%
 
 SET CMD_PARTITION=diskpart /s "%DISKPART_SCRIPT%"
-ECHO CMD_PARTITION=%CMD_PARTITION%
 ::::::::::::::::::::::::::::::::::::: 
 
 ::###################### CMD_WRITE_MBR
 :::::::::::::::::::::::::::::::: BOOTICE [/boot_file=grldr]
-SET CMD_WRITE_MBR="%_BooticeEXETool%" /DEVICE=%TARGET_VOLUME% /mbr /install /type=GRUB4DOS /v045 /quiet
-ECHO CMD_WRITE_MBR=%CMD_WRITE_MBR%
+SET CMD_WRITE_MBR1="%_BooticeEXETool%" /DEVICE=%TARGET_VOLUME% /mbr /install /type=GRUB4DOS /v045 /quiet
+SET CMD_WRITE_MBR2="%_BooticeEXETool%" /DEVICE=%TARGET_VOLUME% /partitions /activate /quiet
 ::::::::::::::::::::::::::::::::
 
 
 ::#######################################################################
-::####################################################################### EXECUTION
-::#######################################################################
+::####################################################################### LOGGING AND CONFIRMATION
+::####################################################################### ( "^" for skipping ":", ">", "(" and ")" )
+ECHO Current volume^:        %CURRENT_VOLUME%
+IF "%TARGET_VOLUME:~1,1%" == ":" (
+ECHO Target volume^:         %TARGET_VOLUME%
+)
+ECHO Target disk^:           Disk#%TARGET_DISK_INDEX% - ~%TARGET_DISK_SIZE_GB%GB
+IF NOT "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
+ECHO Boot partition size^:   %SIZE_BOOT_MB%MB ^(%SIZE_BOOT_GB%GB^)
+ECHO Partitioning Command^:  %CMD_PARTITION%
+)
+ECHO MBR-Writing Command^:   %CMD_WRITE_MBR1%
+ECHO.
+IF "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" ECHO ... will skip "Partitioning & Formatting", as current volume is the target
+
 ECHO Confirm?
 PAUSE
-ECHO Partitioning ^& Formatting ...
-:: PAUSE
-CALL %CMD_PARTITION%
-IF NOT %ERRORLEVEL% == 0 ( ECHO ERROR^: partitioning was not successful && EXIT /B %ERRORLEVEL% )
+ECHO.
+
+::#######################################################################
+::####################################################################### EXECUTION
+::#######################################################################
+IF NOT "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
+    ECHO Partitioning ^& Formatting ...
+    CALL %CMD_PARTITION%
+    IF NOT %ERRORLEVEL% == 0 ( ECHO ERROR^: partitioning was not successful && EXIT /B %ERRORLEVEL% )
+)
+DEL %DISKPART_SCRIPT%>Nul 2>&1
+:: ELSE ECHO Skipping "Partitioning & Formatting ..."
 ECHO Writing MBR ...
-:: PAUSE
-CALL %CMD_WRITE_MBR%
+CALL %CMD_WRITE_MBR1%
+IF "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
+    ECHO Activating current volume ...
+    CALL %CMD_WRITE_MBR2%
+)
 IF NOT %ERRORLEVEL% == 0 ( ECHO ERROR^: writing MBR was not successful && EXIT /B %ERRORLEVEL% )
 COPY /V /Y menu.lst %TARGET_VOLUME%\menu.lst>Nul 2>&1
 ECHO Finished!
@@ -151,7 +169,7 @@ EXIT /B 0
 :_DiskIndexExists
 CALL :_ListRemovableDiskIndex
 SET REMOVABLE_DISKINDEX=%RESULT%
-:: ECHO Removable drives detected: %REMOVABLE_DISKINDEX%
+:: ECHO Removable drives detected^: %REMOVABLE_DISKINDEX%
 ECHO %REMOVABLE_DISKINDEX%| FIND "%~1">Nul && ( SET errorlevel=0 ) || ( SET errorlevel=1 )
 EXIT /B %errorlevel%
 
@@ -163,7 +181,7 @@ SET VOLUME=%~1
 SET VOLUME=%VOLUME:~0,1%
 
 :: The next lines call `wmic` and invokes ":ProcessFoundLine" with the o/p line THAT CONTAINS "Disk#"
-SET CMD=wmic logicaldisk where 'DeviceID LIKE '%VOLUME%%%'' Assoc /AssocClass:Win32_LogicalDiskToPartition 2^>NUL
+SET CMD=wmic logicaldisk where 'DeviceID LIKE '%VOLUME%%%'' Assoc /AssocClass:Win32_LogicalDiskToPartition 2>NUL
 FOR /F "tokens=* USEBACKQ" %%I IN (`%CMD%`) DO ECHO %%~I| FIND "Disk #">Nul && CALL :ProcessFoundLine "%%~I"
 EXIT /B 1
 
