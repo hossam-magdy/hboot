@@ -23,7 +23,6 @@ SET TARGET_VOLUME=%1
 
 SET CURRENT_VOLUME=%_SCRIPT_DRIVE%
 
-:: TODO: fix CALL
 CALL :_ListRemovableVolumeLetter
 SET REMOVABLE_VOLUMELETTERS=%RESULT%
 ECHO Removable volumes detected^: %REMOVABLE_VOLUMELETTERS%
@@ -36,9 +35,8 @@ IF "%TARGET_VOLUME%" == "" (
        GOTO :CheckTargetVolume
     )
 ) ELSE (
-    REM SET "TARGET_DISK_INDEX="&FOR /f "delims=0123456789" %%i in ("%TARGET_VOLUME") DO set TARGET_DISK_INDEX=%%i
     IF 1%TARGET_VOLUME% EQU +1%TARGET_VOLUME% (
-       REM ECHO %TARGET_VOLUME% is numeric and positive
+       :: %TARGET_VOLUME% is numeric and positive
        SET TARGET_DISK_INDEX=%TARGET_VOLUME%
        GOTO :TargetDiskNumberIsSet
     )
@@ -146,32 +144,12 @@ GOTO :EOF
 
 
 ::###################### _GetDiskSize
-:GiB2MB
-:: in 62 => out 57740
-:: (should be 57744, but that an error due to math calc limitaion in batch)
-SET /a RESULT=%~1 * 1024
-SET /a RESULT=%RESULT% * 1000 / 1024
-SET /a RESULT=%RESULT% * 1000 / 1024
-SET /a RESULT=%RESULT% * 1000 / 1024
-:: SET /a RESULT=(%SIZE_BOOT_GB% * 1024) + 50
-:: SET RESULT=%SIZE_BOOT_BYTE:~0,-6%
-EXIT /B 0
-
-::###################### _GetDiskSize
 :_GetDiskSizeInGB
 SET RESULT=
 FOR /F "usebackq tokens=1,2,3,4 " %%i in (`wmic diskdrive where "MediaType='Removable Media'" get index^,partitions^,serialnumber^,size 2^>NUL`) DO IF "%%i" == "%~1" CALL SET "RESULT=%%l"
     :: ECHO %%i is a USB drive.
 IF NOT "%RESULT%" == "" SET RESULT=%RESULT:~0,-9%
 EXIT /B 0
-
-::###################### _VolumeLetterToDiskID
-:_DiskIndexExists
-CALL :_ListRemovableDiskIndex
-SET REMOVABLE_DISKINDEX=%RESULT%
-:: ECHO Removable drives detected^: %REMOVABLE_DISKINDEX%
-ECHO %REMOVABLE_DISKINDEX%| FIND "%~1">Nul && ( SET errorlevel=0 ) || ( SET errorlevel=1 )
-EXIT /B %errorlevel%
 
 ::###################### _VolumeLetterToDiskID
 :_VolumeLetterToDiskID
@@ -201,15 +179,6 @@ SET RESULT=
 FOR /F "usebackq tokens=1,2,3,4 " %%i in (`wmic logicaldisk get caption^,description^,drivetype 2^>NUL`) DO IF %%l EQU 2 CALL SET "RESULT=%%RESULT%%, %%i"
     :: ECHO %%i is a USB drive.
 SET RESULT=%RESULT:~2%
-EXIT /B 0
-
-::###################### _ListRemovableVolumeLetter
-:_ListRemovableDiskIndex
-:: Call this like: CALL _ListRemovableVolumeLetter
-SET RESULT=
-FOR /F "usebackq tokens=1,2,3,4 " %%i in (`wmic diskdrive where "MediaType='Removable Media'" get index^,partitions^,serialnumber^,size 2^>NUL`) DO IF 1%%i EQU +1%%i CALL SET "RESULT=%%RESULT%%, %%i"
-    :: ECHO %%i is a USB drive.
-IF "%RESULT%" NEQ "" SET RESULT=%RESULT:~2%
 EXIT /B 0
 
 :EOF
