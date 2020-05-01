@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Run this file as:
-# - install-ubuntu.sh [TARGET_DEVICE] [BOOT_SIZE=10GB]
-# - install-ubuntu.sh /dev/sdd 15GB
+# - install-ubuntu.sh [TARGET_DEVICE] [BOOT_SIZE_GB=10]
+# - install-ubuntu.sh /dev/sdd 15
 
 # Dependency commands:
 # - sudo
@@ -25,10 +25,10 @@ function get_device_size() {
 }
 
 MBR_FILENAME="./grub_mbr" # relative to this file
-DEFAULT_SIZE_BOOT="10GB"  # 1KB = 1000B , 1KiB = 1024B
+DEFAULT_SIZE_BOOT_GB="10"  # in GB (1KB = 1000B , 1KiB = 1024B)
 
-TARGET_DEV=${1:-$(read -e -i "/dev/sd" -p "Enter the target device (e.g: /dev/sdX) … (hint: check cmd \`df\`): " && echo $REPLY)}
-SIZE_BOOT="${2:-$DEFAULT_SIZE_BOOT}" # second arg or 10GB
+TARGET_DEV="${1:-$(read -e -i "/dev/sd" -p "Enter the target device (e.g: /dev/sdX) … (hint: check cmd \`df\`): " && echo $REPLY)}"
+SIZE_BOOT="${2:-$DEFAULT_SIZE_BOOT_GB}GB" # second arg or 10GB
 SIZE_TOTAL=$(get_device_size $TARGET_DEV)
 MBR_FILEPATH=$(readlink -f $(dirname "$0")/$MBR_FILENAME)
 # CURRENT_DEV=$(df --output=source . | sed -n '2 p' | sed 's/.$//') # e.g: /dev/sdc
