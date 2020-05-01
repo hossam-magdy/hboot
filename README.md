@@ -12,6 +12,7 @@ Once this tool is setup on a USB stick, you can copy any/all of the following IS
 - [Win10_1909_English_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
 - [Win10_1909_German_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
 - [Win7PE_x64.iso](https://archive.org/download/win7pe-x64/Win7PE_x64.iso) (see [screenshots](https://archive.org/details/win7pe-x64))
+- also useful for windows users: [_MustHave_Win_.iso](https://archive.org/download/musthave-win)
 
 **Screenshot of the boot menu**
 
