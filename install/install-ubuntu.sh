@@ -25,7 +25,7 @@ function get_device_size() {
 }
 
 MBR_FILENAME="./grub_mbr" # relative to this file
-DEFAULT_SIZE_BOOT_GB="10"  # in GB (1KB = 1000B , 1KiB = 1024B)
+DEFAULT_SIZE_BOOT_GB="18"  # in GB (1KB = 1000B , 1KiB = 1024B)
 
 TARGET_DEV="${1:-$(read -e -i "/dev/sd" -p "Enter the target device (e.g: /dev/sdX) … (hint: check cmd \`df\`): " && echo $REPLY)}"
 SIZE_BOOT="${2:-$(read -e -i $DEFAULT_SIZE_BOOT_GB -p "Enter the boot partition size in GB: " && echo $REPLY)}GB" # second arg in GB, or prompt with default=10GB
