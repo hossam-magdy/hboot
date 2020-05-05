@@ -31,7 +31,7 @@ IF "%TARGET_VOLUME%" == "" (
     ECHO %REMOVABLE_VOLUMELETTERS%| FIND "%CURRENT_VOLUME%">Nul && (
        SET TARGET_VOLUME=%CURRENT_VOLUME%
     ) || (
-       SET /p TARGET_VOLUME="Choose target USB volume: "
+       SET /p TARGET_VOLUME="Enter the target device volume or Disk# (e.g: E:, F:, 1, 2): "
        GOTO :CheckTargetVolume
     )
 ) ELSE (
@@ -58,6 +58,7 @@ SET DEFAULT_SIZE_BOOT_GB=17
 SET MINIMUM_SIZE_BOOT_GB=2
 :: TODO: Take it from input, or fallback to DEFAULT_SIZE_BOOT
 SET SIZE_BOOT_GB=%2
+IF "%SIZE_BOOT_GB%" == "" SET /p SIZE_BOOT_GB="Enter the boot partition size [empty = default: %DEFAULT_SIZE_BOOT_GB%]: "
 IF "%SIZE_BOOT_GB%" == "" SET SIZE_BOOT_GB=%DEFAULT_SIZE_BOOT_GB%
 SET /a SIZE_BOOT_GB=%SIZE_BOOT_GB% * 1
 IF %SIZE_BOOT_GB% EQU 0 ( ECHO ERROR^: invalid value of SIZE_BOOT_GB && EXIT /B 1 )
