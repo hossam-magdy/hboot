@@ -53,7 +53,7 @@ CALL :_GetDiskSizeInGB %TARGET_DISK_INDEX%
 SET TARGET_DISK_SIZE_GB=%RESULT%
 IF "%TARGET_DISK_SIZE_GB%" == "" ( ECHO ERROR^: unknown size of device %TARGET_DISK_INDEX% && EXIT /B 1 )
 
-::###################### SIZE_BOOT_GB
+::###################### SIZE_BOOT_GB (in GiB)
 SET DEFAULT_SIZE_BOOT_GB=17
 SET MINIMUM_SIZE_BOOT_GB=2
 :: TODO: Take it from input, or fallback to DEFAULT_SIZE_BOOT
