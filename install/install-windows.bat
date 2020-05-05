@@ -102,18 +102,28 @@ SET CMD_WRITE_MBR2="%_BooticeEXETool%" /DEVICE=%TARGET_VOLUME% /partitions /acti
 ::####################################################################### LOGGING AND CONFIRMATION
 ::####################################################################### ( "^" for skipping ":", ">", "(" and ")" )
 ECHO Current volume^:        %CURRENT_VOLUME%
-IF "%TARGET_VOLUME:~1,1%" == ":" (
-ECHO Target volume^:         %TARGET_VOLUME%
-)
-ECHO Target disk^:           Disk#%TARGET_DISK_INDEX% - ~%TARGET_DISK_SIZE_GB%GB
-IF NOT "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
-ECHO Boot partition size^:   %SIZE_BOOT_MB%MB ^(%SIZE_BOOT_GB%GB^)
-ECHO Partitioning Command^:  %CMD_PARTITION%
-)
-ECHO MBR-Writing Command^:   %CMD_WRITE_MBR1%
 ECHO.
-IF "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" ECHO ... will skip "Partitioning & Formatting", as current volume is the target
+ECHO WARNING: all data on the target device will be completely lost
+ECHO
+IF "%TARGET_VOLUME:~1,1%" == ":" (
+ECHO - Target device^:   Disk#%TARGET_DISK_INDEX% ^(~%TARGET_DISK_SIZE_GB%GB^) - %TARGET_VOLUME%
+) ELSE (
+ECHO - Target device^:   Disk#%TARGET_DISK_INDEX% ^(~%TARGET_DISK_SIZE_GB%GB^)
+)
+IF NOT "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
+ECHO - Boot partition:  SIZE_BOOT_MB%MB ^(%SIZE_BOOT_GB%GB^) / ~%TARGET_DISK_SIZE_GB%GB
+ECHO  ... Partitioning Command^:  %CMD_PARTITION%
+)
+ECHO  ... MBR-Writing Command^:   %CMD_WRITE_MBR1%
 
+:: ECHO Target disk^:           Disk#%TARGET_DISK_INDEX% - ~%TARGET_DISK_SIZE_GB%GB
+IF "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
+ECHO  ... Boot-flag activation Command^:   %CMD_WRITE_MBR2%
+ECHO.
+ECHO  ... will skip "Partitioning & Formatting", as current volume is the target
+)
+
+ECHO.
 ECHO Confirm?
 PAUSE
 ECHO.
@@ -127,7 +137,6 @@ IF NOT "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
     IF NOT %ERRORLEVEL% == 0 ( ECHO ERROR^: partitioning was not successful && EXIT /B %ERRORLEVEL% )
 )
 DEL %DISKPART_SCRIPT%>Nul 2>&1
-:: ELSE ECHO Skipping "Partitioning & Formatting ..."
 ECHO Writing MBR ...
 CALL %CMD_WRITE_MBR1%
 IF "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
