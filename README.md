@@ -28,39 +28,27 @@ Also there are other tools, some of them are great, but lack some important feat
 
 ## Setup: using installer
 
-1. Based your OS, choose from
+1. Run **`install/install-ubuntu.sh`** (or **`install/install-windows.bat`** on Windows). It can be run with or without arguments as follows:
 
-   - `install/install-ubuntu.sh`
-   - `install/install-windows.bat`
+   | Ubuntu                                                        | Windows                                                              |
+   | ------------------------------------------------------------- | -------------------------------------------------------------------- |
+   | `install/install-ubuntu.sh [TARGET_DEVICE] [BOOT_SIZE_GB=18]` | `install/install-windows.bat [TARGET_DEVICE] [SIZE_BOOT_GB=17]`      |
+   | Ex 1: `install/install-ubuntu.sh`                             | Ex 1: `install/install-windows.bat`                                  |
+   | Ex 1: `install/install-ubuntu.sh /dev/sdb`                    | Ex 1: `install/install-windows.bat E: 10`                            |
+   | Ex 1: `install/install-ubuntu.sh /dev/sdc 11`                 | Ex 2: `install/install-windows.bat 1 10` , _(`1` is Disk#, or `E:`)_ |
 
-   then run it, either:
+   Please proceed with the confirmation only if you are sure that the shown information are correct and expected.
 
-   - **without arguments**: i.e: run/open the installer directly.
-
-     It will prompt for couple of inputs, then confirmation.
-
-   - or **with arguments**: No prompt, only confirmation.
-
-     - on Ubuntu, using BASH:
-       - `install/install-ubuntu.sh [TARGET_DEVICE] [BOOT_SIZE_GB=18]`
-       - Example: `install/install-ubuntu.sh /dev/sdd 15`
-     - on Windows, using CMD:
-       - `install/install-windows.bat [TARGET_DEVICE] [SIZE_BOOT_GB=17]`
-       - Example 1: `install/install-windows.bat E: 17`
-       - Example 2: `install/install-windows.bat 1 17`
-
-   **_Note_: In the installer**: make sure the shown information are as expected, then proceed the confirmation.
-
-2. Copy all the HBoot files and folder (this whole repo), to the USB storage's boot drive.
+2. Copy all the HBoot files and folders (this whole repo), to the root of USB storage's boot drive.
 
 3. Copy any (or all) of the follwing ISO files to `iso/` directory:
 
-   - [ubuntu-20.04-desktop-amd64.iso](https://releases.ubuntu.com/20.04/ubuntu-20.04-desktop-amd64.iso)
-   - [Win10_1909_English_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
-   - [Win10_1909_German_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
-   - [Win7PE_x64.iso](https://archive.org/download/win7pe-x64/Win7PE_x64.iso) (see [details](https://archive.org/details/win7pe-x64))
+   - iso/[ubuntu-20.04-desktop-amd64.iso](https://releases.ubuntu.com/20.04/ubuntu-20.04-desktop-amd64.iso)
+   - iso/[Win10_1909_English_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
+   - iso/[Win10_1909_German_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
+   - iso/[Win7PE_x64.iso](https://archive.org/download/win7pe-x64/Win7PE_x64.iso) (see [details](https://archive.org/details/win7pe-x64) of this ISO)
 
-4. Run `iso/verify-iso.sh` (or `iso/verify-iso.bat` on Windows), to make sure that the ISO files are possible to boot from.
+4. Run **`iso/verify-iso.sh`** (or **`iso/verify-iso.bat`** on Windows), to ensure that the ISO files are possible to boot from.
 
 ## Setup: manual
 
@@ -79,9 +67,8 @@ Also there are other tools, some of them are great, but lack some important feat
 
 ## TODO
 
-- create installer for windows (like ubuntu one) … using BootICE cli: see [this](http://reboot.pro/topic/21271-how-to-use-bootice-creat-two-partitions-command-line/) and [this](https://www.portablefreeware.com/forums/viewtopic.php?t=20478), then move tutorial to sub md file
+- Drop step #2 in installation, copy in the installer
 - check/use `rsync` and its windows equivalent
-- move verify-iso.bat/sh to iso/ dir ? (but it updates .menuISOFileList.lst … => update it in the installer ?)
 - in GRUB2 branch:
   - load Windows ISO (again)… using memdisk (slow) AND chainloader/whatever
   - finalize the menu items in `grub.cfg`
