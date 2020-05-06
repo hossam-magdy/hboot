@@ -1,9 +1,9 @@
 @ECHO OFF
 
 :: Run this file as:
-:: - install-windows.bat [TARGET_DEVICE] [BOOT_SIZE=10GB]
-:: - install-windows.bat E: 17GB
-:: - install-windows.bat 1 17GB
+:: - install-windows.bat [TARGET_DEVICE] [SIZE_BOOT_GB=10]
+:: - install-windows.bat E: 17
+:: - install-windows.bat 1 17
 
 ::SETLOCAL (disabled to enable gloibal vars in calling :Section_CopyFiles)
 SET _SCRIPT_DRIVE=%~d0
