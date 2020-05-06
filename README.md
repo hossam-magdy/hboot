@@ -46,7 +46,7 @@ Also there are other tools, some of them are great, but lack some important feat
    - iso/[Win10_1909_English_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
    - iso/[Win10_1909_German_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
 
-4. Run **`iso/verify-iso.sh`** (or **`iso/verify-iso.bat`** on Windows), to ensure that the ISO files are possible to boot from.
+4. Run **`iso/verify-iso-ubuntu.sh`** (or **`iso/verify-iso-windows.bat`** on Windows), to ensure that the ISO files are possible to boot from.
 
 ## Setup: manual
 
