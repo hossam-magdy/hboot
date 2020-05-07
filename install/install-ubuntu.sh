@@ -14,6 +14,8 @@
 # - mount
 # - mountpoint
 # - rsync
+# - chown
+# - lsblk
 
 [ "$EUID" -eq 0 ] || {
   # echo "Runnig with 'sudo'"
@@ -26,15 +28,17 @@ ROOT_DIR=$(readlink -f $(dirname "$0")/..)
 cd $ROOT_DIR
 
 ORIGINAL_USER=$(logname)
+ORIGINAL_UID=$(id -u $ORIGINAL_USER)
 DEFAULT_MOUNTPOINT="/media/$ORIGINAL_USER/HBoot"
 
 MBR_FILEPATH="$ROOT_DIR/install/grub_mbr"
 DEFAULT_SIZE_BOOT_GB="18" # in GB (1MB = 1000KB , 1MiB = 1024KiB)
 
-# # TODO
-# function list_removable_disks() {
-#   lsblk -d | cut -d ' ' -f 2
-# }
+function list_removable_disks() {
+  # The next lines transfers: "sdb     8:16   1   62008590336  0 disk"   =>   "/dev/sdb (62GB)"
+  DETECTED=$(lsblk -db | awk '{ if ( $3 == 1 && $6 == "disk" ) print "/dev/"$1" ("int($4/100000000 + 0.5)/10"GB)" }' ORS=', ')
+  echo ${DETECTED::-2} # remove last 2 chars ", "
+}
 
 function get_disk_size() {
   SIZE_TOTAL=$(parted -l $1 | grep "Disk $1: ")
@@ -48,28 +52,33 @@ function get_mountpoint() {
     # keep looping as long as the iterated dir is a current mount point (a device is mounted to it)
     while mountpoint "${DEFAULT_MOUNTPOINT}${i}" >/dev/nul 2>&1; do i=$((i + 1)); done
     MOUNTPOINT=${DEFAULT_MOUNTPOINT}${i}
+
     [ ! -d $MOUNTPOINT ] && mkdir -p $MOUNTPOINT
-    mount ${1} $MOUNTPOINT
+    chown $ORIGINAL_USER:$ORIGINAL_USER $MOUNTPOINT
+
+    # set owner and group for the mounted device: https://unix.stackexchange.com/a/30272
+    mount -o gid:$ORIGINAL_UID,uid:$ORIGINAL_UID ${1} $MOUNTPOINT
     echo ${MOUNTPOINT}
   )
   echo ${MOUNTPOINT}
 }
 
-TARGET_DEV="${1:-$(read -e -i "/dev/sd" -p "Enter the target device (e.g: /dev/sdX) … (hint: check cmd \`df\`): " && echo $REPLY)}"
-SIZE_BOOT="${2:-$(read -e -i $DEFAULT_SIZE_BOOT_GB -p "Enter the boot partition size in GB: " && echo $REPLY)}GB" # second arg in GB, or prompt with default=10GB
+echo "Removable disks detected:              $(list_removable_disks)"
+TARGET_DEV="${1:-$(read -e -i "/dev/sd" -p "Enter the target disk (e.g: /dev/sdX): " && echo $REPLY)}"
+SIZE_BOOT="${2:-$(read -e -i $DEFAULT_SIZE_BOOT_GB -p "Enter the boot partition size in GB:   " && echo $REPLY)}GB" # second arg in GB, or prompt with default=10GB
 SIZE_TOTAL=$(get_disk_size $TARGET_DEV)
 # CURRENT_DEV=$(df --output=source . | sed -n '2 p' | sed 's/.$//') # e.g: /dev/sdc
 
-[ -z "$SIZE_TOTAL" ] && echo "Error: unrecognized device/size of $TARGET_DEV" && exit 1
+[ -z "$SIZE_TOTAL" ] && echo "Error: unrecognized disk / size of $TARGET_DEV" && exit 1
 [ ! -f "$MBR_FILEPATH" ] && echo "Error: MBR file not found: $MBR_FILEPATH" && exit 1
 [ "9216" != "$(stat -c%s $MBR_FILEPATH)" ] && echo "Error: size of MBR file is not equal 9216 bytes" && exit 1
-[ "/dev/sda" == "$TARGET_DEV" ] && echo "Error: target device must not be '/dev/sda'" && exit 1
+[ "/dev/sda" == "$TARGET_DEV" ] && echo "Error: target disk must not be '/dev/sda'" && exit 1
 
 echo
-echo "WARNING: all data on the target device will be completely lost"
+echo "WARNING: all data on the target disk will be completely lost"
 echo
-echo "- Target device:   $TARGET_DEV"
-echo "- Boot partition:  $SIZE_BOOT / $SIZE_TOTAL"
+echo "- Target disk:    $TARGET_DEV"
+echo "- Boot partition: $SIZE_BOOT / $SIZE_TOTAL"
 # echo "- MBR file: $MBR_FILEPATH"
 echo
 
