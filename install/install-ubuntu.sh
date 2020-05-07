@@ -111,8 +111,8 @@ echo "Mounting …"
 MOUNTPOINT=$(get_mountpoint ${TARGET_DEV}1)
 
 echo "Copying files …"
+rsync -aq "$ROOT_DIR/" "$MOUNTPOINT" --exclude ".git" # the "/" after $ROOT_DIR is crucial
 # cp -r "$ROOT_DIR" "$TARGET_DEV"
-rsync -aq "$ROOT_DIR" "$MOUNTPOINT" --exclude ".git"
 
 # ################ Dev Reference Commands:
 # ### BK FULL
