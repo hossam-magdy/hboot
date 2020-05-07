@@ -11,6 +11,9 @@
 # - umount
 # - mkfs.ntfs
 # - dd
+# - mount
+# - mountpoint
+# - rsync
 
 [ "$EUID" -eq 0 ] || {
   # echo "Runnig with 'sudo'"
@@ -18,23 +21,47 @@
   exit $?
 }
 
-function get_device_size() {
+# to run COMMAND as a user within sudo: sudo -H -u $ORIGINAL_USER COMMAND
+ROOT_DIR=$(readlink -f $(dirname "$0")/..)
+cd $ROOT_DIR
+
+ORIGINAL_USER=$(logname)
+DEFAULT_MOUNTPOINT="/media/$ORIGINAL_USER/HBoot"
+
+MBR_FILEPATH="$ROOT_DIR/install/grub_mbr"
+DEFAULT_SIZE_BOOT_GB="18" # in GB (1MB = 1000KB , 1MiB = 1024KiB)
+
+# # TODO
+# function list_removable_disks() {
+#   lsblk -d | cut -d ' ' -f 2
+# }
+
+function get_disk_size() {
   SIZE_TOTAL=$(parted -l $1 | grep "Disk $1: ")
   [ -z "$SIZE_TOTAL" ] && exit 1
   echo ${SIZE_TOTAL/#Disk $1: /}
 }
 
-MBR_FILENAME="./grub_mbr" # relative to this file
-DEFAULT_SIZE_BOOT_GB="18"  # in GB (1KB = 1000B , 1KiB = 1024B)
+function get_mountpoint() {
+  MOUNTPOINT=$(grep "^$1 " /proc/mounts | cut -d ' ' -f 2)
+  [ -z "$MOUNTPOINT" ] && (
+    # keep looping as long as the iterated dir is a current mount point (a device is mounted to it)
+    while mountpoint "${DEFAULT_MOUNTPOINT}${i}" >/dev/nul 2>&1; do i=$((i + 1)); done
+    MOUNTPOINT=${DEFAULT_MOUNTPOINT}${i}
+    [ ! -d $MOUNTPOINT ] && mkdir -p $MOUNTPOINT
+    mount ${1} $MOUNTPOINT
+    echo ${MOUNTPOINT}
+  )
+  echo ${MOUNTPOINT}
+}
 
 TARGET_DEV="${1:-$(read -e -i "/dev/sd" -p "Enter the target device (e.g: /dev/sdX) … (hint: check cmd \`df\`): " && echo $REPLY)}"
 SIZE_BOOT="${2:-$(read -e -i $DEFAULT_SIZE_BOOT_GB -p "Enter the boot partition size in GB: " && echo $REPLY)}GB" # second arg in GB, or prompt with default=10GB
-SIZE_TOTAL=$(get_device_size $TARGET_DEV)
-MBR_FILEPATH=$(readlink -f $(dirname "$0")/$MBR_FILENAME)
+SIZE_TOTAL=$(get_disk_size $TARGET_DEV)
 # CURRENT_DEV=$(df --output=source . | sed -n '2 p' | sed 's/.$//') # e.g: /dev/sdc
 
 [ -z "$SIZE_TOTAL" ] && echo "Error: unrecognized device/size of $TARGET_DEV" && exit 1
-[ ! -f "$MBR_FILEPATH" ] && echo "Error: MBR file not found" && exit 1
+[ ! -f "$MBR_FILEPATH" ] && echo "Error: MBR file not found: $MBR_FILEPATH" && exit 1
 [ "9216" != "$(stat -c%s $MBR_FILEPATH)" ] && echo "Error: size of MBR file is not equal 9216 bytes" && exit 1
 [ "/dev/sda" == "$TARGET_DEV" ] && echo "Error: target device must not be '/dev/sda'" && exit 1
 
@@ -45,9 +72,10 @@ echo "- Target device:   $TARGET_DEV"
 echo "- Boot partition:  $SIZE_BOOT / $SIZE_TOTAL"
 # echo "- MBR file: $MBR_FILEPATH"
 echo
+
 read -s -p "Press [Enter] to continue …" _
 
-echo -e "\b\r\b\r                              " # to overwrite the "Please … live above"
+echo -e "\b\r\b\r                              " # to overwrite the "Please … line above"
 echo "Starting …"
 ################ WIPE/ERASE the device, create new PartitionTable
 # Unmount
@@ -78,6 +106,13 @@ dd of=$TARGET_DEV if=$MBR_FILEPATH seek=1024 skip=1024 bs=1 count=8192 2>/dev/nu
 # Clone P_T for GRUB
 dd if=$TARGET_DEV of=$TARGET_DEV skip=440 seek=952 bs=1 count=72 2>/dev/nul
 # echo "MBR and GRUB was written to the disk successfully"
+
+echo "Mounting …"
+MOUNTPOINT=$(get_mountpoint ${TARGET_DEV}1)
+
+echo "Copying files …"
+# cp -r "$ROOT_DIR" "$TARGET_DEV"
+rsync -aq "$ROOT_DIR" "$MOUNTPOINT" --exclude ".git"
 
 # ################ Dev Reference Commands:
 # ### BK FULL
