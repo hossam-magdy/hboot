@@ -46,7 +46,7 @@ function verify_iso_files() {
       echo -e " $MARK_CROSS $COLOR$isoFile$S_RESET: non-contiguous ($N fragements found)"
     }
   done
-  [ "0" == $countFragementedFiles ] && echo "Done… $MARK_CHECK all checked files are contiguous!" || echo -e "Done… found 2 non-bootable ISO files.\n$MARK_WARN Please 'Delete+re-Copy' or 'Defrag' them!"
+  [ "0" == $countFragementedFiles ] && echo -e "Done… $MARK_CHECK all checked files are contiguous!" || echo -e "Done… found 2 non-bootable ISO files.\n$MARK_WARN Please 'Delete+re-Copy' or 'Defrag' them!"
 }
 
 # scan recursively (regardless ISO_DIR = iso or .) and case-insensitively "*.iso" files
