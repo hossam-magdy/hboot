@@ -10,7 +10,7 @@ SET ISO_DIR=%ROOT_DIR%\iso
 SET _ContigEXETool=%ROOT_DIR%\tools\SysinternalsContig.exe
 SET FragISOLogFile=%TEMP%\hboot_fragmented_iso_files
 SET menuISOFileList=%ROOT_DIR%\boot\.menuISOFileList.lst
-set menuISOChooseTypeGRUBPath=boot/.menuISOChooseType.lst
+set menuISOChooseTypeGRUBPath=/boot/.menuISOChooseType.lst
 
 
 if not exist "%ROOT_DIR%/boot" ( GOTO DoneISOContig )
@@ -53,7 +53,7 @@ echo ###################################################
 echo ################ Listing ISO files ################
 echo ###################################################
 echo.>%menuISOFileList%
-for /f "delims=" %%d in ("dir %ISO_DIR%/*.iso /b") do (
+for /f "delims=" %%d in (`dir %ISO_DIR%/*.iso /b`) do (
     echo.>>%menuISOFileList%
     echo title Set ISO="%%d">>%menuISOFileList%
     echo set MYISO=%%d>>%menuISOFileList%
