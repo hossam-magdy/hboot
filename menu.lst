@@ -10,8 +10,8 @@
 timeout 30
 default 0
 
-SET VMLINUZ=/casper/vmlinuz.efi
-SET INITRD=/casper/initrd.lz
+SET VMLINUZ=/casper/vmlinuz
+SET INITRD=/casper/initrd.gz
 
 # set colors
 #color black/cyan    blue/cyan        red/light-blue     red/cyan
