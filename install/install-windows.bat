@@ -62,7 +62,9 @@ SET DEFAULT_SIZE_BOOT_GIB=17
 SET MINIMUM_SIZE_BOOT_GIB=2
 :: TODO: Take it from input, or fallback to DEFAULT_SIZE_BOOT
 SET SIZE_BOOT_GIB=%2
-IF "%SIZE_BOOT_GIB%" == "" SET /p SIZE_BOOT_GIB="Enter the boot partition size in GiB [default = %DEFAULT_SIZE_BOOT_GIB%]: "
+IF NOT "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
+    IF "%SIZE_BOOT_GIB%" == "" SET /p SIZE_BOOT_GIB="Enter the boot partition size in GiB [default = %DEFAULT_SIZE_BOOT_GIB%]: "
+)
 IF "%SIZE_BOOT_GIB%" == "" SET SIZE_BOOT_GIB=%DEFAULT_SIZE_BOOT_GIB%
 SET /a SIZE_BOOT_GIB=%SIZE_BOOT_GIB% * 1
 IF %SIZE_BOOT_GIB% EQU 0 ( ECHO ERROR^: invalid value of SIZE_BOOT_GIB && PAUSE && EXIT /B 1 )
@@ -70,7 +72,6 @@ IF %SIZE_BOOT_GIB% LSS %MINIMUM_SIZE_BOOT_GIB% ( ECHO ERROR^: value of SIZE_BOOT
 IF %SIZE_BOOT_GIB% GTR %TARGET_DISK_SIZE_GB% ( ECHO ERROR^: value of SIZE_BOOT_GIB must not exceed %TARGET_DISK_SIZE_GB% GB && PAUSE && EXIT /B 1 )
 SET /a SIZE_BOOT_MIB=%SIZE_BOOT_GIB% * 1024
 :::::::::
-
 ::###################### CMD_PARTITION
 
 :::::::::::::::::::::::::::::::: Partitioning Using Diskpart
@@ -80,39 +81,37 @@ SET /a SIZE_BOOT_MIB=%SIZE_BOOT_GIB% * 1024
 SET DISKPART_SCRIPT=%TEMP%\hboot_diskpart_script
 SET DISKPART_OUTPUT=%TEMP%\hboot_diskpart_output
 
-ECHO SELECT DISK %TARGET_DISK_INDEX% >%DISKPART_SCRIPT%
-ECHO detail disk >>%DISKPART_SCRIPT%
-:: ECHO AUTOMOUNT DISABLE >>%DISKPART_SCRIPT%
+ECHO SELECT DISK %TARGET_DISK_INDEX% >"%DISKPART_SCRIPT%"
+ECHO DETAIL DISK >>"%DISKPART_SCRIPT%"
+:: ECHO AUTOMOUNT DISABLE >>"%DISKPART_SCRIPT%"
 IF "%TARGET_VOLUME:~1,1%" == ":" (
-ECHO SELECT VOLUME %TARGET_VOLUME:~0,1% >>%DISKPART_SCRIPT%
-ECHO REMOVE >>%DISKPART_SCRIPT%
+ECHO SELECT VOLUME %TARGET_VOLUME:~0,1% >>"%DISKPART_SCRIPT%"
+ECHO REMOVE >>"%DISKPART_SCRIPT%"
 )
-ECHO CLEAN >>%DISKPART_SCRIPT%
-ECHO rescan >>%DISKPART_SCRIPT%
-ECHO.>>%DISKPART_SCRIPT%
-ECHO CREATE PARTITION PRIMARY SIZE=%SIZE_BOOT_MIB% >>%DISKPART_SCRIPT%
-ECHO FORMAT FS=NTFS LABEL=HBoot QUICK >>%DISKPART_SCRIPT%
-ECHO ACTIVE >>%DISKPART_SCRIPT%
-ECHO ASSIGN >>%DISKPART_SCRIPT%
-ECHO rescan >>%DISKPART_SCRIPT%
-ECHO detail disk >>%DISKPART_SCRIPT%
-ECHO.>>%DISKPART_SCRIPT%
-ECHO CREATE PARTITION PRIMARY >>%DISKPART_SCRIPT%
-ECHO FORMAT FS=NTFS LABEL=HData QUICK >>%DISKPART_SCRIPT%
-ECHO ASSIGN >>%DISKPART_SCRIPT%
-ECHO rescan >>%DISKPART_SCRIPT%
-ECHO detail disk >>%DISKPART_SCRIPT%
-ECHO rescan >>%DISKPART_SCRIPT%
-:: ECHO EXIT >>%DISKPART_SCRIPT%
-:: ECHO AUTOMOUNT ENABLE >>%DISKPART_SCRIPT%
+ECHO CLEAN >>"%DISKPART_SCRIPT%"
+ECHO RESCAN >>"%DISKPART_SCRIPT%"
+ECHO.>>"%DISKPART_SCRIPT%"
+ECHO CREATE PARTITION PRIMARY SIZE=%SIZE_BOOT_MIB% >>"%DISKPART_SCRIPT%"
+ECHO FORMAT FS=NTFS LABEL=HBoot QUICK >>"%DISKPART_SCRIPT%"
+ECHO ACTIVE >>"%DISKPART_SCRIPT%"
+ECHO ASSIGN >>"%DISKPART_SCRIPT%"
+ECHO DETAIL DISK >>"%DISKPART_SCRIPT%"
+ECHO.>>"%DISKPART_SCRIPT%"
+ECHO CREATE PARTITION PRIMARY >>"%DISKPART_SCRIPT%"
+ECHO FORMAT FS=NTFS LABEL=HData QUICK >>"%DISKPART_SCRIPT%"
+ECHO ASSIGN >>"%DISKPART_SCRIPT%"
+ECHO DETAIL DISK >>"%DISKPART_SCRIPT%"
+ECHO RESCAN >>"%DISKPART_SCRIPT%"
+:: ECHO EXIT >>"%DISKPART_SCRIPT%"
+:: ECHO AUTOMOUNT ENABLE >>"%DISKPART_SCRIPT%"
 
-SET CMD_PARTITION=diskpart /s "%DISKPART_SCRIPT%" >%DISKPART_OUTPUT%
+SET CMD_PARTITION=diskpart /s "%DISKPART_SCRIPT%" >"%DISKPART_OUTPUT%"
 ::::::::::::::::::::::::::::::::::::: 
 
 ::###################### CMD_WRITE_MBR
 :::::::::::::::::::::::::::::::: BOOTICE [/boot_file=grldr]
 SET CMD_WRITE_MBR1="%_BooticeEXETool%" /DEVICE=%TARGET_DISK_INDEX% /mbr /install /type=GRUB4DOS /v045 /quiet
-SET CMD_WRITE_MBR2="%_BooticeEXETool%" /DEVICE=%TARGET_DISK_INDEX% /partitions /activate /quiet
+SET CMD_WRITE_MBR2="%_BooticeEXETool%" /DEVICE=%TARGET_DISK_INDEX%^:0 /partitions /activate /quiet
 ::::::::::::::::::::::::::::::::
 
 
@@ -120,8 +119,10 @@ SET CMD_WRITE_MBR2="%_BooticeEXETool%" /DEVICE=%TARGET_DISK_INDEX% /partitions /
 ::####################################################################### LOGGING AND CONFIRMATION
 ::####################################################################### ( "^" for skipping ":", ">", "(" and ")" )
 ECHO.
+IF "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
 ECHO WARNING: all data on the target device will be completely lost
 ECHO.
+)
 IF "%TARGET_VOLUME:~1,1%" == ":" (
 ECHO - Target device^:   Disk#%TARGET_DISK_INDEX% ^(~%TARGET_DISK_SIZE_GB%GB^) [%TARGET_VOLUME%]
 ) ELSE (
@@ -133,14 +134,14 @@ ECHO - Boot partition:  %SIZE_BOOT_MIB%MiB ^(%SIZE_BOOT_GIB%GiB^) / ~%TARGET_DIS
 ECHO.
 IF NOT "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
 ECHO ... Partitioning Command^:       %CMD_PARTITION%
+) ELSE (
+ECHO ... will skip "Partitioning & Formatting", because the target volume is the current one
 )
 ECHO ... MBR-Writing Command^:        %CMD_WRITE_MBR1%
 
 :: ECHO Target disk^:           Disk#%TARGET_DISK_INDEX% - ~%TARGET_DISK_SIZE_GB%GB
 IF "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
-ECHO  ... Boot activation Command^:   %CMD_WRITE_MBR2%
-ECHO.
-ECHO  ... will skip "Partitioning & Formatting", as current volume is the target
+ECHO ... Boot activation Command^:    %CMD_WRITE_MBR2%
 )
 
 ECHO.
@@ -155,7 +156,7 @@ ECHO Starting ...
 IF NOT "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
     ECHO Partitioning ^& Formatting ...
     CALL %CMD_PARTITION%
-    IF %ERRORLEVEL% == 0 DEL %DISKPART_OUTPUT%>Nul 2>&1 ELSE ECHO ... partitioning errorlevel = %ERRORLEVEL%
+    IF %ERRORLEVEL% == 0 ( DEL %DISKPART_OUTPUT%>Nul 2>&1 ) ELSE ECHO.... partitioning errorlevel ^= %ERRORLEVEL%
 )
 DEL %DISKPART_SCRIPT%>Nul 2>&1
 
@@ -173,15 +174,21 @@ IF "%TARGET_VOLUME%" == "%CURRENT_VOLUME%" (
 )
 IF NOT %ERRORLEVEL% == 0 ( ECHO ERROR^: activating boot partition was not successful ^(%ERRORLEVEL%^) && PAUSE && EXIT /B %ERRORLEVEL% )
 
-ECHO Copying files ...
-:: Prepare hboot_xcopy_exclude list
+REM Prepare "hboot_xcopy_exclude" file and its short path in var XCOPY_EXCLUDE
 SET XCOPY_EXCLUDE=%TEMP%\hboot_xcopy_exclude
-ECHO %ROOT_DIR%\.git>%XCOPY_EXCLUDE%
-:: XCOPY
-XCOPY /H /S /V /Y /I /Q /EXCLUDE:%XCOPY_EXCLUDE% "%ROOT_DIR%" "%HBOOT_VOLUME%">Nul 2>&1
+ECHO %ROOT_DIR%\^.git>"%XCOPY_EXCLUDE%"
+ECHO ^.iso>>"%XCOPY_EXCLUDE%"
+CALL :_ToShortPath "%XCOPY_EXCLUDE%"
+SET XCOPY_EXCLUDE=%RESULT%
+IF NOT "%HBOOT_VOLUME%" == "%CURRENT_VOLUME%" (
+    ECHO Copying files ...
+    REM :: XCOPY
+    XCOPY /H /S /V /Y /I /Q /EXCLUDE:%XCOPY_EXCLUDE% "%ROOT_DIR%" "%HBOOT_VOLUME%">Nul 2>&1
+)
 DEL %XCOPY_EXCLUDE%>Nul 2>&1
 
 ECHO Finished!
+PAUSE
 GOTO :EOF
 
 ::#######################################################################
@@ -195,6 +202,11 @@ SET RESULT=
 FOR /F "usebackq tokens=1,2,3,4 " %%i in (`wmic diskdrive where "MediaType='Removable Media'" get index^,partitions^,serialnumber^,size 2^>NUL`) DO IF "%%i" == "%~1" CALL SET "RESULT=%%l"
     :: ECHO %%i is a USB drive.
 IF NOT "%RESULT%" == "" SET RESULT=%RESULT:~0,-9%
+EXIT /B 0
+
+::###################### _GetDiskSize
+:_ToShortPath
+SET RESULT=%~s1
 EXIT /B 0
 
 ::###################### _GetHBootVolumeLetter
