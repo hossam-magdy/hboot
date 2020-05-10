@@ -55,7 +55,7 @@ echo ###################################################
 echo.>%menuISOFileList%
 for /f "delims=" %%d in (`dir %ISO_DIR%/*.iso /b`) do (
     echo.>>%menuISOFileList%
-    echo title Set ISO="%%d">>%menuISOFileList%
+    echo iftitle [if exist %%d] Set ISO="%%d">>%menuISOFileList%
     echo set MYISO=%%d>>%menuISOFileList%
     echo configfile %menuISOChooseTypeGRUBPath%>>%menuISOFileList%
 )

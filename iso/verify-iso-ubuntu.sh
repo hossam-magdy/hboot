@@ -11,7 +11,8 @@ function list_iso_files_to_menu() {
   menuISOChooseTypeGRUBPath=/boot/.menuISOChooseType.lst
   echo >$menuISOFileList
   for isoFile in $1; do
-    echo "title Set ISO=\"$isoFile\"" >>$menuISOFileList
+    [ ${isoFile:0:2} == "./" ] && isoFile=${isoFile:1}
+    echo "iftitle [if exist $isoFile] Set ISO=\"$isoFile\"" >>$menuISOFileList
     echo "set MYISO=$isoFile" >>$menuISOFileList
     echo "configfile $menuISOChooseTypeGRUBPath" >>$menuISOFileList
     echo >>$menuISOFileList
