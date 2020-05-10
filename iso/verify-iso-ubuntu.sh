@@ -8,12 +8,12 @@ cd $ROOT_DIR
 
 function list_iso_files_to_menu() {
   menuISOFileList=$ROOT_DIR/boot/.menuISOFileList.lst
-  menuISOChooseType=boot/.menuISOChooseType.lst
+  menuISOChooseTypeGRUBPath=boot/.menuISOChooseType.lst
   echo >$menuISOFileList
   for isoFile in $1; do
     echo "title Set ISO=\"$isoFile\"" >>$menuISOFileList
     echo "set MYISO=$isoFile" >>$menuISOFileList
-    echo "configfile $menuISOChooseType" >>$menuISOFileList
+    echo "configfile $menuISOChooseTypeGRUBPath" >>$menuISOFileList
     echo >>$menuISOFileList
   done
 }

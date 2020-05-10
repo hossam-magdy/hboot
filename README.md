@@ -68,8 +68,6 @@ Also there are other tools, some of them are great, but lack some important feat
 
 ## TODO
 
-- In windows installer: implement step #2 => copy files
-- check/use `rsync` and its windows equivalent
 - in GRUB2 branch:
   - load Windows ISO (again)… using memdisk (slow) AND chainloader/whatever
   - finalize the menu items in `grub.cfg`
