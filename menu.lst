@@ -10,6 +10,9 @@
 timeout 30
 default 0
 
+SET VMLINUZ=/casper/vmlinuz.efi
+SET INITRD=/casper/initrd.lz
+
 # set colors
 #color black/cyan    blue/cyan        red/light-blue     red/cyan
 
@@ -204,8 +207,8 @@ find --set-root %MYISO%
 map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
 root (0xff)
-kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /casper/initrd
+kernel %VMLINUZ% file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd %INITRD%
 boot
 
 
@@ -215,8 +218,8 @@ find --set-root %MYISO%
 map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
 root (0xff)
-kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /casper/initrd.lz
+kernel %VMLINUZ% file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd %INITRD%
 boot
 
 
@@ -226,9 +229,9 @@ find --set-root %MYISO%
 map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
 root (0xff)
-kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-#kernel (loop)/casper/vmlinuz boot=casper iso-scan/filename=$isofile locale=en_US.UTF-8 liveimg noprompt persistent noeject quiet splash --
-initrd /casper/initrd.lz
+kernel %VMLINUZ% file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+#kernel %VMLINUZ% boot=casper iso-scan/filename=$isofile locale=en_US.UTF-8 liveimg noprompt persistent noeject quiet splash --
+initrd %INITRD%
 boot
 
 ############################################################

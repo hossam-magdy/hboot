@@ -81,8 +81,8 @@ find --set-root %MYISO%
 map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
 root (0xff)
-kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /casper/initrd
+kernel %VMLINUZ% file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd %INITRD%
 boot
 
 
@@ -91,8 +91,8 @@ find --set-root %MYISO%
 map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
 root (0xff)
-kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /casper/initrd.lz
+kernel %VMLINUZ% file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd %INITRD%
 boot
 
 
