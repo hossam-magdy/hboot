@@ -7,6 +7,8 @@
 #   - http://releases.ubuntu.com
 ############################################################
 
+set ISO_DIR=/iso
+
 timeout 30
 default 0
 
@@ -79,13 +81,13 @@ rootnoverify (hd0)
 #root()
 
 
-iftitle [if exist /Win7PE_x64.iso] Load Windows 7 PE x64 \n (partitioning + backup/clone + manage + internet ...)
-set MYISO=Win7PE_x64.iso
+iftitle [if exist %ISO_DIR%/Win7PE_x64.iso] Load Windows 7 PE x64 \n (partitioning + backup/clone + manage + internet ...)
+set MYISO=%ISO_DIR%/Win7PE_x64.iso
 if exist (hd0,1)/boot/.swap_partitions.g4b (hd0,1)/boot/.swap_partitions.g4b (hd0) 1 SURE
 find --set-root /boot/.swap_partitions.g4b
 cat ()/boot/spaces.txt > ()/Win7PESE.ini
 write ()/Win7PESE.ini [IsoInfo]\r\nIsoName=%MYISO%\r\n
-map /%MYISO% (0xff)
+map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
 map --hook
@@ -100,57 +102,57 @@ chainloader (0xff)/BOOTMGR || chainloader (0xff)
 #root ()
 
 
-iftitle [if exist /Win10_1909_English_x64.iso] Install Windows 10 1909 English (x64) \n Win10_1909_English_x64.iso \n Windows 10 version 1909
-set MYISO=Win10_1909_English_x64.iso
+iftitle [if exist %ISO_DIR%/Win10_1909_English_x64.iso] Install Windows 10 1909 English (x64) \n Win10_1909_English_x64.iso \n Windows 10 version 1909
+set MYISO=%ISO_DIR%/Win10_1909_English_x64.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 
-iftitle [if exist /Win10_1909_German_x64.iso] Install Windows 10 1909 German (x64) \n Win10_1909_German_x64.iso \n Windows 10 version 1909
-set MYISO=Win10_1909_German_x64.iso
+iftitle [if exist %ISO_DIR%/Win10_1909_German_x64.iso] Install Windows 10 1909 German (x64) \n Win10_1909_German_x64.iso \n Windows 10 version 1909
+set MYISO=%ISO_DIR%/Win10_1909_German_x64.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 
-iftitle [if exist /Win10_1909_English_x86.iso] Install Windows 10 1909 English (x86) \n Win10_1909_English_x86.iso \n Windows 10 version 1909
-set MYISO=Win10_1909_English_x86.iso
+iftitle [if exist %ISO_DIR%/Win10_1909_English_x86.iso] Install Windows 10 1909 English (x86) \n Win10_1909_English_x86.iso \n Windows 10 version 1909
+set MYISO=%ISO_DIR%/Win10_1909_English_x86.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 
-iftitle [if exist /Win10_1909_German_x86.iso] Install Windows 10 1909 German (x86) \n Win10_1909_German_x86.iso \n Windows 10 version 1909
-set MYISO=Win10_1909_German_x64.iso
+iftitle [if exist %ISO_DIR%/Win10_1909_German_x86.iso] Install Windows 10 1909 German (x86) \n Win10_1909_German_x86.iso \n Windows 10 version 1909
+set MYISO=%ISO_DIR%/Win10_1909_German_x64.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 
-iftitle [if exist /win10_x64.iso] Install Windows 10 x64 \n win10_x64.iso
-set MYISO=win10_x64.iso
+iftitle [if exist %ISO_DIR%/win10_x64.iso] Install Windows 10 x64 \n win10_x64.iso
+set MYISO=%ISO_DIR%/Win10_x64.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 
-iftitle [if exist /win10_x86.iso] Install Windows 10 x86 \n win10_x86.iso
-set MYISO=win10_x86.iso
+iftitle [if exist %ISO_DIR%/win10_x86.iso] Install Windows 10 x86 \n win10_x86.iso
+set MYISO=%ISO_DIR%/Win10_x86.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 ############################################################ Windows 7
 
-iftitle [if exist /win7_x64.iso] Install Windows 7 x64 \n win7_x64.iso \n Make sure that the USB device is set as 1st boot option at BIOS settings.\n(not choosed as on-time boot by "F12" key)
-set MYISO=win7_x64.iso
+iftitle [if exist %ISO_DIR%/win7_x64.iso] Install Windows 7 x64 \n win7_x64.iso \n Make sure that the USB device is set as 1st boot option at BIOS settings.\n(not choosed as on-time boot by "F12" key)
+set MYISO=%ISO_DIR%/Win7_x64.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 
-iftitle [if exist /win7_x86.iso] Install Windows 7 x86 \n win7_x86.iso \n Make sure that the USB device is set as 1st boot option at BIOS settings.\n(not choosed as on-time boot by "F12" key)
-set MYISO=win7_x86.iso
+iftitle [if exist %ISO_DIR%/win7_x86.iso] Install Windows 7 x86 \n win7_x86.iso \n Make sure that the USB device is set as 1st boot option at BIOS settings.\n(not choosed as on-time boot by "F12" key)
+set MYISO=%ISO_DIR%/Win7_x86.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 ############################################################ Windows XP
 
-iftitle [if exist /win_xp_x86.iso] Install Windows XP Pro SP3 (step1) \n win_xp_x86.iso \n Serial Number : D36RK-QDFFD-BTWWY-BT7KK-43MGM \n *** NOTE : You have to press F6 & load Firadisk driver at the beginning of installation
-set MYISO=win_xp_x86.iso
+iftitle [if exist %ISO_DIR%/win_xp_x86.iso] Install Windows XP Pro SP3 (step1) \n win_xp_x86.iso \n Serial Number : D36RK-QDFFD-BTWWY-BT7KK-43MGM \n *** NOTE : You have to press F6 & load Firadisk driver at the beginning of installation
+set MYISO=%ISO_DIR%/Win_xp_x86.iso
 if exist (hd0,1)/boot/.swap_partitions.g4b (hd0,1)/boot/.swap_partitions.g4b (hd0) 1 SURE
 find --set-root --ignore-floppies --ignore-cd /boot/winvblock.ima.gz
 map --mem /boot/winvblock.ima.gz (fd0)
 map --mem /boot/winvblock.ima.gz  (fd1)
 # if this loads the ISO into memory slowly - then you need to run WinContig on the ISO file on your USB drive to speed it up!
-map  /%MYISO% (0xff) || map  --mem /%MYISO% (0xff)
-find --set-root /%MYISO%
+map  %MYISO% (0xff) || map  --mem %MYISO% (0xff)
+find --set-root %MYISO%
 map (hd0) (hd1)
 map (hd1) (hd0)
 map --hook
@@ -172,12 +174,12 @@ pause Now quickly hit [Enter] twice (and then F6 if you need to install an AHCI 
 boot
 
 
-iftitle [if exist /win_xp_x86.iso] Install Windows XP Pro SP3 (step2) \n win_xp_x86.iso
-set MYISO=win_xp_x86.iso
+iftitle [if exist %ISO_DIR%/win_xp_x86.iso] Install Windows XP Pro SP3 (step2) \n win_xp_x86.iso
+set MYISO=%ISO_DIR%/Win_xp_x86.iso
 if exist (hd0,1)/boot/.swap_partitions.g4b (hd0,1)/boot/.swap_partitions.g4b (hd0) 1 SURE
 find --set-root --ignore-floppies --ignore-cd /boot/winvblock.ima.gz
 # we must load the ISO into memory, so it will be slow to load here ...
-map --mem /%MYISO% (0xff) || map  /%MYISO% (0xff)
+map --mem %MYISO% (0xff) || map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
 map --hook
@@ -198,10 +200,10 @@ boot
 #root()
 
 
-iftitle [if exist /ubuntu-20.04-desktop-amd64.iso] Install Ubuntu 20.04 LTS (Focal Fossa) \n ubuntu-20.04-desktop-amd64.iso \n Unix OS \n (loads iso to mem)
-set MYISO=ubuntu-20.04-desktop-amd64.iso
-find --set-root /%MYISO%
-map --mem /%MYISO% (0xff) || map --heads=0 --sectors-per-track=0 /%MYISO% (0xff)
+iftitle [if exist %ISO_DIR%/ubuntu-20.04-desktop-amd64.iso] Install Ubuntu 20.04 LTS (Focal Fossa) \n ubuntu-20.04-desktop-amd64.iso \n Unix OS \n (loads iso to mem)
+set MYISO=%ISO_DIR%/ubuntu-20.04-desktop-amd64.iso
+find --set-root %MYISO%
+map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
 root (0xff)
 kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=/%MYISO% quiet splash
@@ -209,10 +211,10 @@ initrd /casper/initrd
 boot
 
 
-iftitle [if exist /ubuntu-18.04.4-desktop-amd64.iso] Install Ubuntu 18.04 LTS (Xenial Xerus) \n ubuntu-18.04.4-desktop-amd64.iso \n Unix OS \n (loads iso to mem)
-set MYISO=ubuntu-18.04.4-desktop-amd64.iso
-find --set-root /%MYISO%
-map --mem /%MYISO% (0xff) || map --heads=0 --sectors-per-track=0 /%MYISO% (0xff)
+iftitle [if exist %ISO_DIR%/ubuntu-18.04.4-desktop-amd64.iso] Install Ubuntu 18.04 LTS (Xenial Xerus) \n ubuntu-18.04.4-desktop-amd64.iso \n Unix OS \n (loads iso to mem)
+set MYISO=%ISO_DIR%/ubuntu-18.04.4-desktop-amd64.iso
+find --set-root %MYISO%
+map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
 root (0xff)
 kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=/%MYISO% quiet splash
@@ -220,10 +222,10 @@ initrd /casper/initrd.lz
 boot
 
 
-iftitle [if exist /ubuntu.iso] Install Ubuntu \n ubuntu.iso \n Unix OS \n (loads iso to mem)
-set MYISO=ubuntu.iso
-find --set-root /%MYISO%
-map --mem /%MYISO% (0xff) || map --heads=0 --sectors-per-track=0 /%MYISO% (0xff)
+iftitle [if exist %ISO_DIR%/ubuntu.iso] Install Ubuntu \n ubuntu.iso \n Unix OS \n (loads iso to mem)
+set MYISO=%ISO_DIR%/ubuntu.iso
+find --set-root %MYISO%
+map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
 root (0xff)
 kernel /casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=/%MYISO% quiet splash
@@ -239,10 +241,10 @@ boot
 #root()
 
 
-iftitle [if exist /iso_acronis.iso] Acronis Disk Director (from Memory) \n Partitioning \n ISO size ~130MB
-set MYISO=iso_acronis.iso
-find --set-root /%MYISO%
-map --mem /%MYISO% (hd32)
+iftitle [if exist %ISO_DIR%/iso_acronis.iso] Acronis Disk Director (from Memory) \n Partitioning \n ISO size ~130MB
+set MYISO=%ISO_DIR%/iso_acronis.iso
+find --set-root %MYISO%
+map --mem %MYISO% (hd32)
 map --hook
 chainloader (hd32)
 
@@ -255,57 +257,57 @@ chainloader (hd32)
 #root()
 
 
-iftitle [if exist /iso_acronisTrueImage.iso] Acronis True Image (from Memory) \n Cloning (Backup & Restore) \n ISO size : ~500MB
-set MYISO=iso_acronisTrueImage.iso
-find --set-root /%MYISO%
-map --mem /%MYISO% (hd32)
+iftitle [if exist %ISO_DIR%/iso_acronisTrueImage.iso] Acronis True Image (from Memory) \n Cloning (Backup & Restore) \n ISO size : ~500MB
+set MYISO=%ISO_DIR%/iso_acronisTrueImage.iso
+find --set-root %MYISO%
+map --mem %MYISO% (hd32)
 map --hook
 chainloader (hd32)
 
 
-iftitle [if exist /iso_ghost2003.ima] Norton Ghost 2003 \n Cloning (Backup & Restore)
-set MYISO=iso_ghost2003.ima
-find --set-root /%MYISO%
-map --mem /%MYISO% (fd0)
+iftitle [if exist %ISO_DIR%/iso_ghost2003.ima] Norton Ghost 2003 \n Cloning (Backup & Restore)
+set MYISO=%ISO_DIR%/iso_ghost2003.ima
+find --set-root %MYISO%
+map --mem %MYISO% (fd0)
 map --hook
 root (fd0)
 chainloader +1
 boot
 
 
-iftitle [if exist /iso_NortonGhost15.iso] NortonGhost15 \n Cloning (Backup & Restore)
-set MYISO=iso_NortonGhost15.iso
-find --set-root /%MYISO%
-map /%MYISO% (hd32)
+iftitle [if exist %ISO_DIR%/iso_NortonGhost15.iso] NortonGhost15 \n Cloning (Backup & Restore)
+set MYISO=%ISO_DIR%/iso_NortonGhost15.iso
+find --set-root %MYISO%
+map %MYISO% (hd32)
 map --hook
 root (hd32)
 chainloader (hd32)
 boot
 
 
-iftitle [if exist /iso_ghost15.01.iso] Norton Ghost v15.01 \n Cloning (Backup & Restore)
-set MYISO=iso_ghost15.01.iso
-find --set-root /%MYISO%
-map /%MYISO% (hd32)
+iftitle [if exist %ISO_DIR%/iso_ghost15.01.iso] Norton Ghost v15.01 \n Cloning (Backup & Restore)
+set MYISO=%ISO_DIR%/iso_ghost15.01.iso
+find --set-root %MYISO%
+map %MYISO% (hd32)
 map --hook
 root (hd32)
 chainloader (hd32)
 boot
 
 
-iftitle [if exist /iso_ghost15.01.iso] Norton Ghost v15.01 (Alternative : from Memory) \n Cloning (Backup & Restore) \n ISO size : ~200MB
-set MYISO=iso_ghost15.01.iso
-find --set-root /%MYISO%
-map --mem /%MYISO% (hd32)
+iftitle [if exist %ISO_DIR%/iso_ghost15.01.iso] Norton Ghost v15.01 (Alternative : from Memory) \n Cloning (Backup & Restore) \n ISO size : ~200MB
+set MYISO=%ISO_DIR%/iso_ghost15.01.iso
+find --set-root %MYISO%
+map --mem %MYISO% (hd32)
 map --hook
 chainloader (hd32)
 boot
 
 
-iftitle [if exist /iso_ghost15.01.iso] Norton Ghost v15.01 (Alternative : from Memory & using FiraDisk) \n Cloning (Backup & Restore) \n ISO size : ~200MB
-set MYISO=iso_ghost15.01.iso
+iftitle [if exist %ISO_DIR%/iso_ghost15.01.iso] Norton Ghost v15.01 (Alternative : from Memory & using FiraDisk) \n Cloning (Backup & Restore) \n ISO size : ~200MB
+set MYISO=%ISO_DIR%/iso_ghost15.01.iso
 map --mem (md)0x800+4 (99)
-map /%MYISO% (0xff)
+map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
 map --hook
@@ -321,20 +323,20 @@ boot
 #root()
 
 
-iftitle [if exist /iso_hiren.iso] Hirens BootCD (from Memory .. : MiniXP is Full-Loaded) \n AIO BootCD \n ISO size : ~590MB
-set MYISO=iso_hiren.iso
-map --mem /%MYISO% (0xff)
+iftitle [if exist %ISO_DIR%/iso_hiren.iso] Hirens BootCD (from Memory .. : MiniXP is Full-Loaded) \n AIO BootCD \n ISO size : ~590MB
+set MYISO=%ISO_DIR%/iso_hiren.iso
+map --mem %MYISO% (0xff)
 map --hook
 root (0xff)
 chainloader (0xff)
 boot
 
 
-iftitle [if exist /iso_ubcd.iso] Ultimate BootCD (from Memory & using firadisk.gz) \n AIO BootCD \n ISO size : ~300MB
-set MYISO=iso_ubcd.iso
-find --set-root --ignore-floppies --ignore-cd /%MYISO%
+iftitle [if exist %ISO_DIR%/iso_ubcd.iso] Ultimate BootCD (from Memory & using firadisk.gz) \n AIO BootCD \n ISO size : ~300MB
+set MYISO=%ISO_DIR%/iso_ubcd.iso
+find --set-root --ignore-floppies --ignore-cd %MYISO%
 map --mem /boot/firadisk.gz (fd0)
-map --mem /%MYISO% (0xff)
+map --mem %MYISO% (0xff)
 map --hook
 root (0xff)
 chainloader (0xff)
