@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Run this file as:
-# - install-ubuntu.sh [TARGET_DEVICE] [BOOT_SIZE_GB=10]
-# - install-ubuntu.sh /dev/sdd 15
+# - install.sh [TARGET_DEVICE] [BOOT_SIZE_GB=10]
+# - install.sh /dev/sdd 15
 
 # Dependency commands:
 # - sudo

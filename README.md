@@ -24,31 +24,40 @@ No need for [Windows USB/DVD Download Tool](https://www.microsoft.com/en-us/down
 
 Also there are other tools, some of them are great, but lack some important features (as far as I have found), because they either extract the ISO content or limited to Linux distros (no windows). Some of these tools are: [UNetbootin](https://www.pendrivelinux.com/using-unetbootin-to-create-a-linux-usb-from-linux/), [MultiBsootUSB](http://multibootusb.org/page_guide/), [Rufus](https://rufus.ie/), [YUMI](https://www.pendrivelinux.com/yumi-multiboot-usb-creator/)… etc. Using `HBoot`, there is no need for them as well.
 
-## Setup: using installer
+## Setup… via installer (recommended)
 
-1. Run **`install/install-ubuntu.sh`** (or **`install/install-windows.bat`** on Windows). It can be run with or without arguments as follows:
+1. Run the installer:
+
+   Ubuntu: `curl -sSL https://raw.github.com/hossam-magdy/hboot/master/install/install-latest.sh | sh`
+
+   Windows: TBD
+
+    <details>
+    <summary>Fot further details,… check the installer arguments</summary>
+
+   Run **`install/install.sh`** (or **`install/install.bat`** on Windows). It can be run with or without arguments as follows:
 
    | Ubuntu                                                                                                                                                            | Windows                                                                                                                                                                                                                                                                        |
    | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-   | **`install/install-ubuntu.sh [TARGET_DEVICE] [BOOT_SIZE=18]`**                                                                                                    | **`install/install-windows.bat [TARGET_DEVICE] [SIZE_BOOT_GB=17]`**                                                                                                                                                                                                            |
+   | **`install/install.sh [TARGET_DEVICE] [BOOT_SIZE=18]`**                                                                                                           | **`install/install.bat [TARGET_DEVICE] [SIZE_BOOT_GB=17]`**                                                                                                                                                                                                                    |
    | - **TARGET_DEVICE**:<br>in the form of `/dev/sdX` <br>- **BOOT_SIZE** [default=`18`]:<br>integer in [GB](https://en.wikipedia.org/wiki/Gigabyte) (1 GB = 1000 MB) | - **TARGET_DEVICE**:<br>drive letter (**E:**, **F:**) or Disk# (**1**, **2**) as in [diskmgmt.msc](https://www.google.com/search?q=Windows+Disk+Management) <br>- **BOOT_SIZE** [default=`17`]:<br>integer in [GiB](https://en.wikipedia.org/wiki/Gibibyte) (1 GiB = 1024 MiB) |
-   | Ex 1: `install/install-ubuntu.sh`                                                                                                                                 | Ex 1: `install/install-windows.bat`                                                                                                                                                                                                                                            |
-   | Ex 1: `install/install-ubuntu.sh /dev/sdb`                                                                                                                        | Ex 1: `install/install-windows.bat E: 10`                                                                                                                                                                                                                                      |
-   | Ex 1: `install/install-ubuntu.sh /dev/sdc 11`                                                                                                                     | Ex 2: `install/install-windows.bat 1 10` , _(`1` is Disk#1)_                                                                                                                                                                                                                   |
+   | Ex 1: `install/install.sh`                                                                                                                                        | Ex 1: `install/install.bat`                                                                                                                                                                                                                                                    |
+   | Ex 1: `install/install.sh /dev/sdb`                                                                                                                               | Ex 1: `install/install.bat E: 10`                                                                                                                                                                                                                                              |
+   | Ex 1: `install/install.sh /dev/sdc 11`                                                                                                                            | Ex 2: `install/install.bat 1 10` , _(`1` is Disk#1)_                                                                                                                                                                                                                           |
 
    Please proceed with the confirmation only if you are sure that the shown information are correct and expected.
 
-2. Copy all the HBoot files and folders (this whole repo), to the root of USB storage's boot drive.
+    </details>
 
-3. Copy any (or all) of the follwing ISO files to `iso/` directory:
+2. Copy any (or all) of the follwing ISO files to `iso/` directory:
 
    - iso/[ubuntu-20.04-desktop-amd64.iso](https://releases.ubuntu.com/20.04/ubuntu-20.04-desktop-amd64.iso)
    - iso/[Win10_1909_English_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
    - iso/[Win10_1909_German_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
 
-4. Run **`iso/verify-iso-ubuntu.sh`** (or **`iso/verify-iso-windows.bat`** on Windows), to ensure that the ISO files are possible to boot from.
+3. Run **`iso/verify-iso.sh`** (or **`iso/verify-iso.bat`** on Windows), to ensure that the ISO files are possible to boot from.
 
-## Setup: manual
+## Setup… manual
 
 - on Windows: using [`BOOTICE`](./tools/BOOTICE.exe), follow along [this tutorial](./doc/tutorial-windows.md).
 
@@ -65,6 +74,7 @@ Also there are other tools, some of them are great, but lack some important feat
 
 ## TODO
 
+- `install-latest.bat`s
 - in GRUB2 branch:
   - load Windows ISO (again)… using memdisk (slow) AND chainloader/whatever
   - finalize the menu items in `grub.cfg`
