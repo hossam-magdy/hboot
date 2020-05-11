@@ -4,13 +4,15 @@ A tool to enable booting directly from USB stick containing multiple ISO files.
 
 ## Benefits
 
-Using this tool you can have a USB stick divided into 2 partitions (Boot + Data) so you can still use the Data partition for personal storage. And even in the Boot partition will not be packed with multiple files as the ISO files are directly copied.
+Using this tool you can have a USB stick divided into 2 partitions (Boot + Data) so you can still use the Data partition for personal storage. In the Boot partition you can simply copy any/all the ISO files you would like to boot from.
 
-Once this tool is setup on a USB stick, you can copy any/all of the following ISO files, then boot from any of them:
+Example of the latest supported ISO files:
 
 - [ubuntu-20.04-desktop-amd64.iso](https://releases.ubuntu.com/20.04/ubuntu-20.04-desktop-amd64.iso)
 - [Win10_1909_English_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
 - [Win10_1909_German_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
+
+… and the list goes on to many older version of Ubuntu (18.04, 16.04, …), Windows (10, 8, 7, XP), CentOS, Fedora, Debian, … and more.
 
 **Sample screenshot of the boot menu**
 
@@ -28,9 +30,9 @@ Also there are other tools, some of them are great, but lack some important feat
 
 1. Run the installer:
 
-   Ubuntu: `curl -sSL https://raw.github.com/hossam-magdy/hboot/master/install/install-latest.sh | bash`
+   Ubuntu: `curl -sSL https://raw.github.com/hossam-magdy/hboot/master/install/latest.sh | sh`
 
-   Windows: TBD
+   Windows: downoad the [hboot files archive](https://github.com/hossam-magdy/hboot/archive/master.zip), extract it, and run `install/install.bat`
 
     <details>
     <summary>Fot further details,… check the installer arguments</summary>
@@ -64,7 +66,7 @@ Also there are other tools, some of them are great, but lack some important feat
 - on Ubuntu:
 
   - use the "Disks" manager, `gparted`, or `parted` for partitioning
-  - not yet known a solid way for `GRUBLegacy` installation on Ubuntu 12.04 or later, except for restoring a backup bin file.
+  - there is no known solid way for `GRUBLegacy` installation on later than Ubuntu 12.04, except for restoring a backup bin file.
 
     A full backup file can be found in `install/grub_mbr`, which is of exact size of **9216 bytes** including the MBR and few more bytes afterwards.
 
@@ -74,8 +76,10 @@ Also there are other tools, some of them are great, but lack some important feat
 
 ## TODO
 
-- make `install-latest.sh` sh compatible
-- `install-latest.bat`
+- in installers: being aware of pre-installed HBoot: no re-partitioning format? re-copy files, maintain ISO's, …
+- suffix downloaded gz file with date?
+- `install/latest.bat` for windows
+- list of supported ISO's
 - in GRUB2 branch:
   - load Windows ISO (again)… using memdisk (slow) AND chainloader/whatever
   - finalize the menu items in `grub.cfg`
