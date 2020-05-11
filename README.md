@@ -28,7 +28,7 @@ Also there are other tools, some of them are great, but lack some important feat
 
 1. Run the installer:
 
-   Ubuntu: `curl -sSL https://raw.github.com/hossam-magdy/hboot/master/install/install-latest.sh | sh`
+   Ubuntu: `curl -sSL https://raw.github.com/hossam-magdy/hboot/master/install/install-latest.sh | bash`
 
    Windows: TBD
 
@@ -74,7 +74,8 @@ Also there are other tools, some of them are great, but lack some important feat
 
 ## TODO
 
-- `install-latest.bat`s
+- make `install-latest.sh` sh compatible
+- `install-latest.bat`
 - in GRUB2 branch:
   - load Windows ISO (again)… using memdisk (slow) AND chainloader/whatever
   - finalize the menu items in `grub.cfg`
