@@ -11,8 +11,11 @@ Example of the latest supported ISO files:
 - [ubuntu-20.04-desktop-amd64.iso](https://releases.ubuntu.com/20.04/ubuntu-20.04-desktop-amd64.iso)
 - [Win10_1909_English_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
 - [Win10_1909_German_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
+- [Win7PE_x64.iso](https://archive.org/download/win-7-pe/Win7PE_x64.iso) (see [screenshots](https://archive.org/details/win-7-pe))
 
 … and the list goes on to many older version of Ubuntu (18.04, 16.04, …), Windows (10, 8, 7, XP), CentOS, Fedora, Debian, … and more.
+
+Also, not for boot but useful for windows maintenance is the [_MustHave_Win_.iso](https://archive.org/download/must-have-win).
 
 **Sample screenshot of the boot menu**
 
@@ -56,6 +59,7 @@ Also there are other tools, some of them are great, but lack some important feat
    - iso/[ubuntu-20.04-desktop-amd64.iso](https://releases.ubuntu.com/20.04/ubuntu-20.04-desktop-amd64.iso)
    - iso/[Win10_1909_English_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
    - iso/[Win10_1909_German_x64.iso](https://www.microsoft.com/en-us/software-download/windows10ISO/)
+   - iso/[Win7PE_x64.iso](https://archive.org/download/win-7-pe/Win7PE_x64.iso) (see [details](https://archive.org/details/win-7-pe) of this ISO)
 
 3. Run **`iso/verify-iso.sh`** (or **`iso/verify-iso.bat`** on Windows), to ensure that the ISO files are possible to boot from.
 

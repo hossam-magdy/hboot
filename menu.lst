@@ -5,6 +5,8 @@
 #   - https://support.microsoft.com/en-us/help/13853/windows-lifecycle-fact-sheet
 # Ubuntu:
 #   - http://releases.ubuntu.com
+# Windows 7 PE (Preinstalled Environment)/(Live):
+#   - https://archive.org/download/win-7-pe/Win7PE_x64.iso
 ############################################################
 
 timeout 30
