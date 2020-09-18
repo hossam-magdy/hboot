@@ -26,4 +26,5 @@ rm "$hboot_gz"
 
 echo "Running installer …"
 chmod +x $hboot_installer
+cd "$hboot_dir"
 $hboot_installer

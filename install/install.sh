@@ -64,8 +64,8 @@ function get_mountpoint() {
 }
 
 echo "Removable disks detected:              $(list_removable_disks)"
-TARGET_DEV="${1:-$(read -e -i "/dev/sd" -p "Enter the target disk (e.g: /dev/sdX): " && echo $REPLY)}"
-SIZE_BOOT="${2:-$(read -e -i $DEFAULT_SIZE_BOOT_GB -p "Enter the boot partition size in GB:   " && echo $REPLY)}GB" # second arg in GB, or prompt with default=10GB
+TARGET_DEV=$([ "$1" != "" ] && echo $1 || read -e -i "/dev/sd" -p "Enter the target disk (e.g: /dev/sdX): " && echo ${REPLY})
+SIZE_BOOT=$([ "$2" != "" ] && echo ${2}GB || read -e -i $DEFAULT_SIZE_BOOT_GB -p "Enter the boot partition size in GB:   " && echo ${REPLY}GB) # second arg in GB, or prompt with default=10GB
 SIZE_TOTAL=$(get_disk_size $TARGET_DEV)
 # CURRENT_DEV=$(df --output=source . | sed -n '2 p' | sed 's/.$//') # e.g: /dev/sdc
 

@@ -1,4 +1,6 @@
 @echo off
+setlocal ENABLEDELAYEDEXPANSION
+
 ::SETLOCAL (disabled to enable gloibal vars in calling :Section_CopyFiles)
 SET _SCRIPT_DRIVE=%~d0
 SET _SCRIPT_PATH=%~dp0
@@ -6,7 +8,11 @@ SET ROOT_DIR=%_SCRIPT_PATH%\..
 CD %ROOT_DIR%
 SET ROOT_DIR=%CD%
 
-SET ISO_DIR=%ROOT_DIR%\iso
+REM remove trailing backslash
+IF %ROOT_DIR:~-1%==\ SET ROOT_DIR=%ROOT_DIR:~0,-1%
+
+SET ISO_DIRNAME=iso
+SET ISO_DIR=%ROOT_DIR%\%ISO_DIRNAME%
 SET _ContigEXETool=%ROOT_DIR%\tools\SysinternalsContig.exe
 SET FragISOLogFile=%TEMP%\hboot_fragmented_iso_files
 SET menuISOFileList=%ROOT_DIR%\boot\.menuISOFileList.lst
@@ -53,10 +59,10 @@ echo ###################################################
 echo ################ Listing ISO files ################
 echo ###################################################
 echo.>%menuISOFileList%
-for /f "delims=" %%d in (`dir %ISO_DIR%/*.iso /b`) do (
+for /f "delims=" %%d in ('dir /b "%ISO_DIRNAME%\*.iso"') do (
     echo.>>%menuISOFileList%
-    echo iftitle [if exist %%d] Set ISO="%%d">>%menuISOFileList%
-    echo set MYISO=%%d>>%menuISOFileList%
+    echo iftitle [if exist /%ISO_DIRNAME%/%%d] Set ISO="/%ISO_DIRNAME%/%%d">>%menuISOFileList%
+    echo set MYISO=/%ISO_DIRNAME%/%%d>>%menuISOFileList%
     echo configfile %menuISOChooseTypeGRUBPath%>>%menuISOFileList%
 )
 echo DONE.

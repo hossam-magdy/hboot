@@ -27,7 +27,7 @@ It currently relies on [GRUB Legacy/0.97](https://www.gnu.org/software/grub/grub
 
 No need for [Windows USB/DVD Download Tool](https://www.microsoft.com/en-us/download/windows-usb-dvd-download-tool), which is a great tool, but eventually extracts the Windows ISO making your USB stick unusable for any other OS installation (Ubuntu or even different other Windows ISO) nor even convenient for personal usage.
 
-Also there are other tools, some of them are great, but lack some important features (as far as I have found), because they either extract the ISO content or limited to Linux distros (no windows). Some of these tools are: [UNetbootin](https://www.pendrivelinux.com/using-unetbootin-to-create-a-linux-usb-from-linux/), [MultiBsootUSB](http://multibootusb.org/page_guide/), [Rufus](https://rufus.ie/), [YUMI](https://www.pendrivelinux.com/yumi-multiboot-usb-creator/)… etc. Using `HBoot`, there is no need for them as well.
+Also there are other tools, some of them are great, but lack some important features (as far as I have found), because they either extract the ISO content or limited to Linux distros (no windows). Some of these tools are: [UNetbootin](https://www.pendrivelinux.com/using-unetbootin-to-create-a-linux-usb-from-linux/), [MultiBootUSB](http://multibootusb.org/page_guide/), [Rufus](https://rufus.ie/), [YUMI](https://www.pendrivelinux.com/yumi-multiboot-usb-creator/)… etc. Using `HBoot`, there is no need for them as well.
 
 ## Setup… via installer (recommended)
 
