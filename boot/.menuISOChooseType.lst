@@ -76,27 +76,17 @@ pause Press ENTER and then unplug this USB drive...
 boot
 
 
-title - Ubuntu 20.04 LTS (Focal Fossa)
+title - Ubuntu 20,18,16,… or earlier
 find --set-root %MYISO%
 # [Option 1]: To-memory mapping … SLOW
 #map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 # [Option 2]: Non-memory mapping … FASTER, boots well if initrd and vmlimuz(kernel) used, are from inside the ISO
 map %MYISO% (0xff)
 map --hook
-kernel /boot/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/initrd
-boot
-
-
-title - Ubuntu 18.04 LTS … or earlier
-find --set-root %MYISO%
-# [Option 1]: To-memory mapping … SLOW
-#map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
-# [Option 2]: Non-memory mapping … FASTER, boots well if initrd and vmlimuz(kernel) used, are from inside the ISO
-map %MYISO% (0xff)
-map --hook
-kernel /boot/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/initrd
+if exist (0xff)/casper/vmlinuz kernel (0xff)/casper/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+if exist (0xff)/casper/vmlinuz.efi kernel (0xff)/casper/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+if exist (0xff)/casper/initrd initrd (0xff)/casper/initrd
+if exist (0xff)/casper/initrd.lz initrd (0xff)/casper/initrd.lz
 boot
 
 
