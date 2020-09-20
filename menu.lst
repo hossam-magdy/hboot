@@ -206,8 +206,8 @@ set MYISO=/iso/ubuntu-20.04-desktop-amd64.iso
 find --set-root %MYISO%
 map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
-kernel /boot/casper/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/casper/initrd.lz
+kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd /boot/initrd.lz
 boot
 
 
@@ -216,8 +216,8 @@ set MYISO=/iso/ubuntu-20.04-desktop-amd64.iso
 find --set-root %MYISO%
 map %MYISO% (0xff)
 map --hook
-kernel /boot/casper/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/casper/initrd.lz
+kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd /boot/initrd.lz
 boot
 
 
@@ -227,8 +227,8 @@ find --set-root %MYISO%
 map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
 root (0xff)
-kernel /boot/casper/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/casper/initrd.lz
+kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd /boot/initrd.lz
 boot
 
 
@@ -238,8 +238,8 @@ find --set-root %MYISO%
 map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
 root (0xff)
-kernel /boot/casper/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/casper/initrd.lz
+kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd /boot/initrd.lz
 boot
 
 
@@ -249,9 +249,9 @@ find --set-root %MYISO%
 map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
 map --hook
 root (0xff)
-kernel /boot/casper/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-#kernel /boot/casper/vmlinuz.efi boot=casper iso-scan/filename=$isofile locale=en_US.UTF-8 liveimg noprompt persistent noeject quiet splash --
-initrd /boot/casper/initrd.lz
+kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+#kernel /boot/vmlinuz.efi boot=casper iso-scan/filename=$isofile locale=en_US.UTF-8 liveimg noprompt persistent noeject quiet splash --
+initrd /boot/initrd.lz
 boot
 
 ############################################################
