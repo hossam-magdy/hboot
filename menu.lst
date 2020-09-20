@@ -81,7 +81,7 @@ rootnoverify (hd0)
 #root()
 
 
-iftitle [if exist /iso/Win7PE_x64.iso] Load Windows 7 PE x64 \n (partitioning + backup/clone + manage + internet ...)
+iftitle [if exist /iso/Win7PE_x64.iso] Load Windows 7 PE x64 \n (partitioning + backup/clone + manage + internet ...) \n for proper/full version, make sure 'Boot' is the 1st partition
 set MYISO=/iso/Win7PE_x64.iso
 if exist (hd0,1)/boot/.swap_partitions.g4b (hd0,1)/boot/.swap_partitions.g4b (hd0) 1 SURE
 find --set-root /boot/.swap_partitions.g4b
@@ -201,57 +201,42 @@ boot
 #root()
 
 
-iftitle [if exist /iso/ubuntu-20.04-desktop-amd64.iso] 1 Install Ubuntu 20.04 LTS (Focal Fossa) \n ubuntu-20.04-desktop-amd64.iso \n Unix OS \n (loads iso to mem)
+iftitle [if exist /iso/ubuntu-20.04-desktop-amd64.iso] Install Ubuntu 20.04 LTS (Focal Fossa) \n ubuntu-20.04-desktop-amd64.iso \n Unix OS \n (loads iso to mem) \n for proper/full version, make sure 'boot/{initrd,vmlinuz}' are from the "[ISO]/casper/…"
 set MYISO=/iso/ubuntu-20.04-desktop-amd64.iso
 find --set-root %MYISO%
-map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
-map --hook
-kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/initrd.lz
-boot
-
-
-iftitle [if exist /iso/ubuntu-20.04-desktop-amd64.iso] 2 Install Ubuntu 20.04 LTS (Focal Fossa) \n ubuntu-20.04-desktop-amd64.iso \n Unix OS \n (loads iso to mem)
-set MYISO=/iso/ubuntu-20.04-desktop-amd64.iso
-find --set-root %MYISO%
+# [Option 1]: To-memory mapping … SLOW
+#map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
+# [Option 2]: Non-memory mapping … FASTER, boots well if initrd and vmlimuz(kernel) used, are from inside the ISO
 map %MYISO% (0xff)
 map --hook
-kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/initrd.lz
-boot
-
-
-iftitle [if exist /iso/ubuntu-20.04-desktop-amd64.iso] Install Ubuntu 20.04 LTS (Focal Fossa) \n ubuntu-20.04-desktop-amd64.iso \n Unix OS \n (loads iso to mem)
-set MYISO=/iso/ubuntu-20.04-desktop-amd64.iso
-find --set-root %MYISO%
-map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
-map --hook
-root (0xff)
-kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/initrd.lz
+kernel /boot/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd /boot/initrd
 boot
 
 
 iftitle [if exist /iso/ubuntu-18.04.4-desktop-amd64.iso] Install Ubuntu 18.04 LTS (Xenial Xerus) \n ubuntu-18.04.4-desktop-amd64.iso \n Unix OS \n (loads iso to mem)
 set MYISO=/iso/ubuntu-18.04.4-desktop-amd64.iso
 find --set-root %MYISO%
-map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
+# [Option 1]: To-memory mapping … SLOW
+#map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
+# [Option 2]: Non-memory mapping … FASTER, boots well if initrd and vmlimuz(kernel) used, are from inside the ISO
+map %MYISO% (0xff)
 map --hook
-root (0xff)
-kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/initrd.lz
+kernel /boot/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd /boot/initrd
 boot
 
 
 iftitle [if exist /iso/ubuntu.iso] Install Ubuntu \n ubuntu.iso \n Unix OS \n (loads iso to mem)
 set MYISO=/iso/ubuntu.iso
 find --set-root %MYISO%
-map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
+# [Option 1]: To-memory mapping … SLOW
+#map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
+# [Option 2]: Non-memory mapping … FASTER, boots well if initrd and vmlimuz(kernel) used, are from inside the ISO
+map %MYISO% (0xff)
 map --hook
-root (0xff)
-kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-#kernel /boot/vmlinuz.efi boot=casper iso-scan/filename=$isofile locale=en_US.UTF-8 liveimg noprompt persistent noeject quiet splash --
-initrd /boot/initrd.lz
+kernel /boot/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd /boot/initrd
 boot
 
 ############################################################
@@ -376,7 +361,7 @@ configfile ()/boot/.menuISOFileList.lst
 #title CommandLine (grub-legacy)
 #commandline
 
-iftitle [if exist (hd0,1)/boot/.swap_partitions.g4b] Swap Partitions : ('Boot') <=> ('Data')
+iftitle [if exist (hd0,1)/boot/.swap_partitions.g4b] Swap Partitions : set 'HBoot' as 1st Partition, currently 2nd
 set nPartL=NOT_FOUND
 parttype (hd0,1) > nul
 if #%@retval%>=#7 set nPartL=Data
@@ -388,6 +373,21 @@ echo Press any key to continue, ESC to cancel ...
 pause && set /a key=*0x4CB00 ! configfile ()/menu.lst
 find --set-root /boot/.swap_partitions.g4b
 /boot/.swap_partitions.g4b (hd0) 1 SURE
+find --set-root /menu.lst
+configfile ()/menu.lst
+
+iftitle [if exist (hd0,3)/boot/.swap_partitions.g4b] Swap Partitions : set 'HBoot' as 1st Partition, currently 4th
+set nPartL=NOT_FOUND
+parttype (hd0,3) > nul
+if #%@retval%>=#7 set nPartL=Data
+if exist (hd0,3)/boot set nPartL=Boot
+if %nPartL%==NOT_FOUND configfile ()/menu.lst
+echo 
+echo The '%nPartL%' partition will be set as accessible
+echo Press any key to continue, ESC to cancel ...
+pause && set /a key=*0x4CB00 ! configfile ()/menu.lst
+find --set-root /boot/.swap_partitions.g4b
+/boot/.swap_partitions.g4b (hd0) 3 SURE
 find --set-root /menu.lst
 configfile ()/menu.lst
 

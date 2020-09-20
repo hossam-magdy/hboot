@@ -78,21 +78,25 @@ boot
 
 title - Ubuntu 20.04 LTS (Focal Fossa)
 find --set-root %MYISO%
-map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
+# [Option 1]: To-memory mapping … SLOW
+#map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
+# [Option 2]: Non-memory mapping … FASTER, boots well if initrd and vmlimuz(kernel) used, are from inside the ISO
+map %MYISO% (0xff)
 map --hook
-root (0xff)
-kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/initrd.lz
+kernel /boot/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd /boot/initrd
 boot
 
 
 title - Ubuntu 18.04 LTS … or earlier
 find --set-root %MYISO%
-map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
+# [Option 1]: To-memory mapping … SLOW
+#map --mem %MYISO% (0xff) || map --heads=0 --sectors-per-track=0 %MYISO% (0xff)
+# [Option 2]: Non-memory mapping … FASTER, boots well if initrd and vmlimuz(kernel) used, are from inside the ISO
+map %MYISO% (0xff)
 map --hook
-root (0xff)
-kernel /boot/vmlinuz.efi file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
-initrd /boot/initrd.lz
+kernel /boot/vmlinuz file=/preseed/ubuntu.seed boot=casper root=(0xff) iso-scan/filename=%MYISO% quiet splash
+initrd /boot/initrd
 boot
 
 
