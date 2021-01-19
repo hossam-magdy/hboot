@@ -19,7 +19,7 @@ Also, not for boot but useful for windows maintenance is the [_MustHave_Win_.iso
 
 **Sample screenshot of the boot menu**
 
-![Boot Menu Screenshot](./doc/HBoot-screenshot.png)
+![Boot Menu Screenshot](./docs/HBoot-screenshot.png)
 
 It currently relies on [GRUB Legacy/0.97](https://www.gnu.org/software/grub/grub-legacy.html) (**GR**and **U**nified **B**oot loader).
 
@@ -65,7 +65,7 @@ Also there are other tools, some of them are great, but lack some important feat
 
 ## Setup… manual
 
-- on Windows: using [`BOOTICE`](./tools/BOOTICE.exe), follow along [this tutorial](./doc/tutorial-windows.md).
+- on Windows: using [`BOOTICE`](./tools/BOOTICE.exe), follow along [this tutorial](./docs/tutorial-windows.md).
 
 - on Ubuntu:
 
