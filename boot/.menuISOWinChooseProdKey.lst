@@ -23,7 +23,7 @@ set KEYP=NPPR9-FWDCX-D2C8J-H872K-2YT43
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -37,7 +37,7 @@ set KEYP=W269N-WFGWX-YVC9B-4J6C9-T83GX
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -51,7 +51,7 @@ set KEYP=TX9XD-98N7V-6WMQ6-BX7FG-H8Q99
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -65,7 +65,7 @@ set KEYP=DPH2V-TTNVB-4X9Q3-TJR4H-KHJW4
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -79,7 +79,7 @@ set KEYP=MH37W-N47XK-V7XM9-C7227-GCQG9
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -93,7 +93,7 @@ set KEYP=3KHY7-WNT83-DGQKR-F7HPR-844BM
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -106,7 +106,7 @@ set KEYP=MNDGV-M6PKV-DV4DR-CYY8X-2YRXH
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -120,7 +120,7 @@ set KEYP=XHQ8N-C3MCJ-RQXB6-WCHYG-C9WKB
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -134,7 +134,7 @@ set KEYP=334NH-RXG76-64THK-C7CKG-D3VPT
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -148,7 +148,7 @@ set KEYP=TK8TP-9JN6P-7X7WW-RFFTV-B7QPF
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -162,7 +162,7 @@ set KEYP=XKY4K-2NRWR-8F6P2-448RF-CRYQH
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -176,7 +176,7 @@ set KEYP=BN3D2-R7TKB-3YPBD-8DRP2-27GG4
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -190,7 +190,7 @@ set /p /u KEYP=Enter Product Key :
 cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=W8T8K --replace=%KEYP% ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
@@ -205,7 +205,7 @@ cat ()/boot/firadisk/auWin.xml > ()/autounattend.xml
 cat --locate=<ProductKey> --replace=<!--ductKey> ()/autounattend.xml > nul
 cat --locate=</ProductKey> --replace=</ProductK--> ()/autounattend.xml > nul
 cat ()/boot/spaces.txt > ()/boot/firadisk/ISONAME.CMD
-write ()/boot/firadisk/ISONAME.CMD SET MYISO=\\%MYISO%\r\n
+write ()/boot/firadisk/ISONAME.CMD SET MYISO=%MYISO%\r\n
 map %MYISO% (0xff)
 map (hd0) (hd1)
 map (hd1) (hd0)
