@@ -59,7 +59,7 @@ echo ###################################################
 echo ################ Listing ISO files ################
 echo ###################################################
 echo.>%menuISOFileList%
-for /f "delims=" %%d in ('dir /b "%ISO_DIRNAME%\*.iso"') do (
+for /f "delims=" %%d in ('dir /b "%ISO_DIR%\*.iso"') do (
     echo.>>%menuISOFileList%
     echo iftitle [if exist /%ISO_DIRNAME%/%%d] Set ISO="/%ISO_DIRNAME%/%%d">>%menuISOFileList%
     echo set MYISO=/%ISO_DIRNAME%/%%d>>%menuISOFileList%

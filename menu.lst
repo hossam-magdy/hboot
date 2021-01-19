@@ -102,23 +102,23 @@ chainloader (0xff)/BOOTMGR || chainloader (0xff)
 #root ()
 
 
-iftitle [if exist /iso/Win10_1909_English_x64.iso] Install Windows 10 1909 English (x64) \n Win10_1909_English_x64.iso \n Windows 10 version 1909
-set MYISO=/iso/Win10_1909_English_x64.iso
+iftitle [if exist /iso/Win10_20H2_v2_English_x64.iso] Install Windows 10 20H2 English (x64) \n Win10_20H2_v2_English_x64.iso \n Windows 10 version 20H2
+set MYISO=/iso/Win10_20H2_v2_English_x64.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 
-iftitle [if exist /iso/Win10_1909_German_x64.iso] Install Windows 10 1909 German (x64) \n Win10_1909_German_x64.iso \n Windows 10 version 1909
-set MYISO=/iso/Win10_1909_German_x64.iso
+iftitle [if exist /iso/Win10_20H2_v2_German_x64.iso] Install Windows 10 20H2 German (x64) \n Win10_20H2_v2_German_x64.iso \n Windows 10 version 20H2
+set MYISO=/iso/Win10_20H2_v2_German_x64.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 
-iftitle [if exist /iso/Win10_1909_English_x86.iso] Install Windows 10 1909 English (x86) \n Win10_1909_English_x86.iso \n Windows 10 version 1909
-set MYISO=/iso/Win10_1909_English_x86.iso
+iftitle [if exist /iso/Win10_20H2_v2_English_x86.iso] Install Windows 10 20H2 English (x86) \n Win10_20H2_v2_English_x86.iso \n Windows 10 version 20H2
+set MYISO=/iso/Win10_20H2_v2_English_x86.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 
-iftitle [if exist /iso/Win10_1909_German_x86.iso] Install Windows 10 1909 German (x86) \n Win10_1909_German_x86.iso \n Windows 10 version 1909
-set MYISO=/iso/Win10_1909_German_x64.iso
+iftitle [if exist /iso/Win10_20H2_v2_German_x86.iso] Install Windows 10 20H2 German (x86) \n Win10_20H2_v2_German_x86.iso \n Windows 10 version 20H2
+set MYISO=/iso/Win10_20H2_v2_German_x86.iso
 configfile ()/boot/.menuISOWinChooseProdKey.lst
 
 
