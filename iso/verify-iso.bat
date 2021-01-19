@@ -4,9 +4,9 @@ setlocal ENABLEDELAYEDEXPANSION
 ::SETLOCAL (disabled to enable gloibal vars in calling :Section_CopyFiles)
 SET _SCRIPT_DRIVE=%~d0
 SET _SCRIPT_PATH=%~dp0
-SET ROOT_DIR=%_SCRIPT_PATH%\..
-CD %ROOT_DIR%
-SET ROOT_DIR=%CD%
+
+CALL :NORMALIZEPATH "%_SCRIPT_PATH%.."
+SET ROOT_DIR=%RETVAL%
 
 REM remove trailing backslash
 IF %ROOT_DIR:~-1%==\ SET ROOT_DIR=%ROOT_DIR:~0,-1%
@@ -18,7 +18,12 @@ SET FragISOLogFile=%TEMP%\hboot_fragmented_iso_files
 SET menuISOFileList=%ROOT_DIR%\boot\.menuISOFileList.lst
 set menuISOChooseTypeGRUBPath=/boot/.menuISOChooseType.lst
 
+IF EXIST "%1" (
+  CALL :Section_CopyFiles %*
+  REM GOTO Exit
+)
 
+:Verify_ISO_Contiguous
 if not exist "%ROOT_DIR%/boot" ( GOTO DoneISOContig )
 if not exist "%_ContigEXETool%" ( GOTO SkipISOContig )
 echo ###################################################
@@ -72,6 +77,78 @@ GOTO DonemenuISOFileList
 echo Skipped
 :DonemenuISOFileList
 
+
+GOTO Exit
+
+
+:NORMALIZEPATH
+SET RETVAL=%~f1
+EXIT /B
+
+
+::===================================================================
+::=================================================================== Start of Section_CopyFiles
+::===================================================================
+
+:Section_CopyFiles
+
+
+:: GLOBALLY SET BEFORE
+::SET _SCRIPT_PATH=%~dp0
+::SET _ContigTool=%CD%/_tool_SysinternalsContig.exe
+SET _NamesOfFilesToCopy=
+
+REG ADD "HKCU\SOFTWARE\Sysinternals\Contig" /f /v EulaAccepted /d 1 >nul 2>&1
+for %%L in (%*) do (
+	call set "_NamesOfFilesToCopy=%%_NamesOfFilesToCopy%% "%%~nxL""
+	if exist "%ISO_DIR%\%%~nxL" ( del /f /q "%ISO_DIR%\%%~nxL" >nul 2>&1 )
+	"%_ContigEXETool%" -nobanner -v -n "%ISO_DIR%\%%~nxL" %%~zL
+)
+REG DELETE "HKCU\SOFTWARE\Sysinternals\Contig" /f /v EulaAccepted >nul 2>&1
+
+echo.
+echo.
+echo =================================================================
+echo =================================================================
+echo === Contiguous empty files were created (check above results) ===
+echo ========== you can now COPY and OVERWRITE/REPLACE them ==========
+echo =================================================================
+echo =================================================================
+echo.
+
+ROBOCOPY /? >nul 2>&1
+IF [%ERRORLEVEL%] EQU [9009] (GOTO Section_CopyFiles_Pause)
+
+echo Start copying files (via robocopy)?
+CHOICE /? >nul 2>&1
+IF [%ERRORLEVEL%] EQU [9009] (GOTO VerifyWithSetP)
+:VerifyWithCHOICE
+CHOICE /C YN /T 20 /D N
+IF [%ERRORLEVEL%] NEQ [1] (GOTO Section_CopyFiles_End)
+GOTO startCopy
+:VerifyWithSetP
+set /P Verify="(Type 'y' for 'Yes', otherwise 'No'): "
+IF ["%Verify%"] NEQ ["y"] (GOTO Section_CopyFiles_End)
+GOTO startCopy
+
+
+:startCopy
+cls
+:: for %%x in (%*) do ( :: :: :: "%_ContigEXETool%" -nobanner -a "%ISO_DIR%\%%~nxx" )
+set _Src=%~dp1
+set _Des=%ISO_DIR%
+ROBOCOPY "%_Src:~0,-1%" "%_Des%" %_NamesOfFilesToCopy% /TEE
+
+:Section_CopyFiles_Pause
+::pause /m "press any key to exit ..."
+pause
+
+:Section_CopyFiles_End
+EXIT /b
+
+::===================================================================
+::=================================================================== End of Section_CopyFiles
+::===================================================================
 
 :Exit
 pause
